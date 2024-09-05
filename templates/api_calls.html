@@ -10,13 +10,21 @@
                     <th>Status</th>
                     <th>Total Rows</th>
                     <th>Error Message</th>
+
                 </tr>
             </thead>
             <tbody>
                 {% for call in api_calls %}
                 <tr>
                     <td>{{ call.timestamp.strftime("%d-%m-%Y") }}</td>
-                    <td>{{ call.status }}</td>
+                     <td>
+                        {{ call.status_code }}
+                        {% if call.status_code == 200 %}
+                            <span class="status-indicator" style="background-color: green;"></span>
+                        {% else %}
+                            <span class="status-indicator" style="background-color: red;"></span>
+                        {% endif %}
+                    </td>
                     <td>{{ call.total_rows }}</td>
                     <td>{{ call.error_message }}</td>
                 </tr>

@@ -474,3 +474,12 @@ main.l-main .page-title {
 .sidebar-is-expanded main.l-main {
   padding-left: 220px;
 }
+
+/*Custom*/
+.status-indicator {
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    margin-left: 8px; /* Adjust spacing between status code and indicator */
+}
