@@ -11,9 +11,6 @@ def get_connection():
             dbname=os.getenv('SUPABASE_DB_NAME'),
             user=os.getenv('SUPABASE_USER'),
             password=os.getenv('SUPABASE_PASSWORD')
-            # host = localhost,
-            # port = 5432,
-            # dbname = matomo-task-scheduler
         )
         return conn
     except psycopg2.Error as e:
