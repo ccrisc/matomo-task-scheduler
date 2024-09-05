@@ -15,9 +15,10 @@ def api_calls():
     conn = get_connection()
     if conn:
         with conn.cursor(cursor_factory=RealDictCursor) as cursor:
-            cursor.execute("SELECT * FROM api_calls ORDER BY timestamp DESC")
+            cursor.execute("SELECT timestamp, status, total_rows_found, error_message FROM api_calls ORDER BY timestamp DESC")
             api_calls = cursor.fetchall()
-        conn.close()
+            cursor.close()
+            conn.close()
     else:
         api_calls = []
 

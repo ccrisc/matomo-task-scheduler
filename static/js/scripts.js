@@ -1,46 +1,66 @@
 let Dashboard = (() => {
-  let global = {
-    tooltipOptions: {
-      placement: "right" },
+    let initializeDataTable = () => {
+        if ($.fn.DataTable.isDataTable('#apiCallsTable')) {
+            $('#apiCallsTable').DataTable().destroy();
+        }
 
-    menuClass: ".c-menu" };
+        $('#apiCallsTable').DataTable({
+            // Customize DataTable options as needed
+            "paging": true,
+            "searching": true,
+            "info": true,
+            "ordering": true
+        });
+    };
 
+    let global = {
+        tooltipOptions: {
+            placement: "right"
+        },
 
-  let menuChangeActive = el => {
-    let hasSubmenu = $(el).hasClass("has-submenu");
-    $(global.menuClass + " .is-active").removeClass("is-active");
-    $(el).addClass("is-active");
+        menuClass: ".c-menu"
+    };
 
-    // if (hasSubmenu) {
-    // 	$(el).find("ul").slideDown();
-    // }
-  };
+    let menuChangeActive = el => {
+        let hasSubmenu = $(el).hasClass("has-submenu");
+        $(global.menuClass + " .is-active").removeClass("is-active");
+        $(el).addClass("is-active");
 
-  let sidebarChangeWidth = () => {
-    let $menuItemsTitle = $("li .menu-item__title");
+        // if (hasSubmenu) {
+        // 	$(el).find("ul").slideDown();
+        // }
+    };
 
-    $("body").toggleClass("sidebar-is-reduced sidebar-is-expanded");
-    $(".hamburger-toggle").toggleClass("is-opened");
+    let sidebarChangeWidth = () => {
+        let $menuItemsTitle = $("li .menu-item__title");
 
-    if ($("body").hasClass("sidebar-is-expanded")) {
-      $('[data-toggle="tooltip"]').tooltip("destroy");
-    } else {
-      $('[data-toggle="tooltip"]').tooltip(global.tooltipOptions);
-    }
+        $("body").toggleClass("sidebar-is-reduced sidebar-is-expanded");
+        $(".hamburger-toggle").toggleClass("is-opened");
 
-  };
+        if ($("body").hasClass("sidebar-is-expanded")) {
+            $('[data-toggle="tooltip"]').tooltip("destroy");
+        } else {
+            $('[data-toggle="tooltip"]').tooltip(global.tooltipOptions);
+        }
 
-  return {
-    init: () => {
-      $(".js-hamburger").on("click", sidebarChangeWidth);
+    };
 
-      $(".js-menu li").on("click", e => {
-        menuChangeActive(e.currentTarget);
-      });
+    return {
+        init: () => {
+            $(".js-hamburger").on("click", sidebarChangeWidth);
 
-      $('[data-toggle="tooltip"]').tooltip(global.tooltipOptions);
-    } };
+            $(".js-menu li").on("click", e => {
+                menuChangeActive(e.currentTarget);
+            });
 
+            $('[data-toggle="tooltip"]').tooltip(global.tooltipOptions);
+
+            // Initialize DataTable if on the api_calls page
+            if (window.location.pathname === '/api_calls') {
+                initializeDataTable();
+            }
+        }
+    };
 })();
 
 Dashboard.init();

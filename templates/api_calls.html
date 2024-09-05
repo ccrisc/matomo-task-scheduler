@@ -3,6 +3,7 @@
 {% block content %}
     <h1 class="page-title">Matomo API Status</h1>
     <div class="page-content">
+        <pre>{{ api_calls|tojson }}</pre> <!-- This will print the raw JSON data for debugging -->
         <table id="apiCallsTable" class="display">
             <thead>
                 <tr>
