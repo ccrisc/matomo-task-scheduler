@@ -1,51 +1,29 @@
-<!-- templates/api_calls.html -->
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>API Calls Log</title>
-</head>
-<body>
-    <h1>API Calls Log</h1>
+{% extends "static.html" %}
 
-    <!-- Filter form -->
-    <form method="get" action="/api-calls">
-        <label for="date">Date (YYYY-MM-DD):</label>
-        <input type="date" id="date" name="date" value="{{ date_filter }}">
-
-        <label for="status">Status:</label>
-        <select id="status" name="status">
-            <option value="">All</option>
-            <option value="success" {% if status_filter == 'success' %} selected {% endif %}>Success</option>
-            <option value="failure" {% if status_filter == 'failure' %} selected {% endif %}>Failure</option>
-        </select>
-
-        <button type="submit">Filter</button>
-    </form>
-
-    <!-- API Calls Table -->
-    <table border="1">
-        <thead>
-            <tr>
-                <th>Timestamp</th>
-                <th>Status</th>
-                <th>Status Code</th>
-                <th>Total Rows</th>
-                <th>Error Message</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for call in calls %}
-            <tr>
-                <td>{{ call[0] }}</td>
-                <td>{{ call[1] }}</td>
-                <td>{{ call[2] }}</td>
-                <td>{{ call[3] }}</td>
-                <td>{{ call[4] }}</td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-</body>
-</html>
+{% block content %}
+    <h1 class="page-title">Matomo API Status</h1>
+    <div class="page-content">
+        <table id="apiCallsTable" class="display">
+            <thead>
+                <tr>
+                    <th>Timestamp</th>
+                    <th>Status</th>
+                    <th>Status Code</th>
+                    <th>Total Rows</th>
+                    <th>Error Message</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for call in api_calls %}
+                <tr>
+                    <td>{{ call.timestamp }}</td>
+                    <td>{{ call.status }}</td>
+                    <td>{{ call.status_code }}</td>
+                    <td>{{ call.total_rows }}</td>
+                    <td>{{ call.error_message }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}

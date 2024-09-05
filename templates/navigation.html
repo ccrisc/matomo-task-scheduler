@@ -1,0 +1,43 @@
+<div class="l-sidebar">
+    <div class="logo">
+        <div class="logo__txt">D</div>
+    </div>
+    <div class="l-sidebar__content">
+        <nav class="c-menu js-menu">
+            <ul class="u-list">
+                <li class="c-menu__item {{ 'is-active' if request.endpoint == 'dashboard' else '' }}" data-toggle="tooltip" title="Dashboard">
+                    <a class="c-menu__item__inner" href="{{ url_for('dashboard') }}">
+                        <i class="fa-solid fa-gauge-high"></i>
+                        <div class="c-menu-item__title">
+                            <span>Dashboard</span>
+                        </div>
+                    </a>
+                </li>
+                <li class="c-menu__item {{ 'is-active' if request.endpoint == 'api_calls' else '' }}" data-toggle="tooltip" title="API Status">
+                    <a class="c-menu__item__inner" href="{{ url_for('api_calls') }}">
+                        <i class="fa-solid fa-list-check"></i>
+                        <div class="c-menu-item__title">
+                            <span>API status</span>
+                        </div>
+                    </a>
+                </li>
+                {#                <li class="c-menu__item has-submenu" data-toggle="tooltip" title="Modules">#}
+                {#                    <div class="c-menu__item__inner">#}
+                {#                        <i class="fa fa-puzzle-piece"></i>#}
+                {#                        <div class="c-menu-item__title">#}
+                {#                            <span>Modules</span>#}
+                {#                        </div>#}
+                {#                        <div class="c-menu-item__expand js-expand-submenu">#}
+                {#                            <i class="fa fa-angle-down"></i>#}
+                {#                        </div>#}
+                {#                    </div>#}
+                {#                    <ul class="c-menu__submenu u-list">#}
+                {#                        <li>Payments</li>#}
+                {#                        <li>Maps</li>#}
+                {#                        <li>Notifications</li>#}
+                {#                    </ul>#}
+                {#                </li>#}
+            </ul>
+        </nav>
+    </div>
+</div>
