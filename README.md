@@ -36,6 +36,13 @@
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
+my-flask-app/
+├── api/
+│   └── main.py
+├── requirements.txt
+└── vercel.json
+
+
 This web app designed in Flask is built to perform daily a scheduled API call from matomo analytics, download data and store it into PostgreSQL database.
 
 <img width="1792" alt="Screenshot 2024-07-29 alle 08 57 09" src="https://github.com/user-attachments/assets/0c71dc2f-f8ae-45ec-be30-a34dc16d4987">
