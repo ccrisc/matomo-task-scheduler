@@ -1,4 +1,3 @@
-# api/main.py
 import requests
 import os
 from db.insert_data import insert_data, log_api_call
