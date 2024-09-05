@@ -3,13 +3,11 @@
 {% block content %}
     <h1 class="page-title">Matomo API Status</h1>
     <div class="page-content">
-        <pre>{{ api_calls|tojson }}</pre> <!-- This will print the raw JSON data for debugging -->
         <table id="apiCallsTable" class="display">
             <thead>
                 <tr>
                     <th>Timestamp</th>
                     <th>Status</th>
-                    <th>Status Code</th>
                     <th>Total Rows</th>
                     <th>Error Message</th>
                 </tr>
@@ -17,9 +15,8 @@
             <tbody>
                 {% for call in api_calls %}
                 <tr>
-                    <td>{{ call.timestamp }}</td>
+                    <td>{{ call.timestamp.strftime("%d-%m-%Y") }}</td>
                     <td>{{ call.status }}</td>
-                    <td>{{ call.status_code }}</td>
                     <td>{{ call.total_rows }}</td>
                     <td>{{ call.error_message }}</td>
                 </tr>
