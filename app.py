@@ -1,7 +1,12 @@
 from flask import Flask, render_template
 from db.db_connection import get_connection
 from psycopg2.extras import RealDictCursor
+import os
+from dotenv import load_dotenv
 
+# Load environment variables from .env file if in development
+if os.getenv('FLASK_ENV') == 'development':
+    load_dotenv()
 app = Flask(__name__)
 
 
