@@ -47,6 +47,11 @@ h3 {
   list-style: none;
 }
 
+button {
+  background-color: transparent;
+  border-color: transparent;
+}
+
 .u-input {
   outline: 0;
   border: 1px solid #d0d0d0;

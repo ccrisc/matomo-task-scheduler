@@ -1,3 +1,5 @@
+-- CREATE DATABASE matomo_task_scheduler;
+
 CREATE TABLE api_calls (
     id SERIAL PRIMARY KEY,
     timestamp TIMESTAMPTZ DEFAULT NOW(),
