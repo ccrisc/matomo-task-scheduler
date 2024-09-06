@@ -1,4 +1,4 @@
-from flask import Flask, render_template, redirect, url_for, request
+from flask import Flask, render_template, redirect, url_for, request, session
 from flask_login import LoginManager, UserMixin, login_user, logout_user, login_required, current_user
 from werkzeug.security import check_password_hash
 from db.db_connection import get_connection
@@ -75,14 +75,14 @@ def login():
                 login_user(user_obj)
                 return redirect(url_for('dashboard'))
             else:
-                return 'Invalid username or password'
+                return 'Invalid username or password', 401
         else:
-            return 'Database connection error'
+            return 'Database connection error', 500
 
     return render_template('login.html')
 
 
-@app.route('/logout')
+@app.route('/logout', methods=['POST'])
 @login_required
 def logout():
     logout_user()

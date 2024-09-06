@@ -24,7 +24,9 @@
                         <div class="c-dropdown__content"></div>
                     </div>
                 </div>
-                <div class="c-header-icon logout" id="logout-button"><i class="fa fa-power-off"></i></div>
+                <form action="{{ url_for('logout') }}" method="post" class="logout-form">
+                    <button type="submit" class="c-header-icon logout"><i class="fa fa-power-off"></i></button>
+                </form>
             </div>
         </div>
     </header>
@@ -52,24 +54,5 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <script src="https://cdn.datatables.net/2.1.5/js/jquery.dataTables.min.js"></script>
     <script src="{{ url_for('static', filename='js/scripts.js') }}"></script>
-
-    <!-- Logout Script -->
-    <script>
-        $(document).ready(function() {
-            $('#logout-button').on('click', function() {
-                // Option 1: Using form submission
-                // Create a form and submit it
-                $('<form>', {
-                    'action': '/logout',
-                    'method': 'POST'
-                }).appendTo('body').submit();
-
-                // Option 2: Using AJAX (if you prefer a more seamless approach)
-                // $.post('/logout', function() {
-                //     window.location.href = '/login'; // Redirect after logout
-                // });
-            });
-        });
-    </script>
 </body>
 </html>
