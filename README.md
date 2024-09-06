@@ -36,22 +36,16 @@
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
-my-flask-app/
-├── api/
-│   └── main.py
-├── requirements.txt
-└── vercel.json
-
-
 This web app designed in Flask is built to perform daily a scheduled API call from matomo analytics, download data and store it into PostgreSQL database.
 
 <img width="1792" alt="Screenshot 2024-07-29 alle 08 57 09" src="https://github.com/user-attachments/assets/0c71dc2f-f8ae-45ec-be30-a34dc16d4987">
 
 Main functionalities:
-* CRUD Operations
-* Interactivity with AJAX
-* Automatic form validation
-* Search Query
+* API calls from Matomo Analytics
+* DB operations
+* Scheduled jobs
+* Automatic deployment
+* Authentication
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -63,6 +57,8 @@ Main functionalities:
   <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/flask/flask-original.svg" width="40" height="40" />
   <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/postgresql/postgresql-original.svg" width="40" height="40" />
   <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/supabase/supabase-original.svg" width="40" height="40" />
+  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/vercel/vercel-original.svg" width="40" height="40" />
+          
           
 </p>
 
@@ -76,19 +72,11 @@ To get a local copy up and running follow be ture to have the following steps ch
 
 * Make sure you have pip installed 
 * Create a DB instance on supabase
-* 
-  ```postgresql
-  CREATE TABLE if not exists 
-  ```
+* Create necessary DB tables. You can find all the CREATE queries in [db/create_tables.sql](db%2Fcreate_tables.sql)
 * Install necessary packages
-  ```sh
-  pip install flask requests psycopg2 apscheduler
-  ```
-  alternatively  you can run
   ```sh
   pip install -r requirements.txt
   ```
-* 
 
 
 ### Installation
