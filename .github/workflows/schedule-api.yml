@@ -3,23 +3,21 @@ name: Scheduled API Job
 on:
   schedule:
     - cron: '0 0 * * *'  # Runs daily at midnight UTC
+  workflow_dispatch:  # Allows manual triggering
 
 jobs:
   run-api-job:
     runs-on: ubuntu-latest
 
     steps:
-      # Step 1: Checkout the repository code
       - name: Checkout code
         uses: actions/checkout@v3
 
-      # Step 2: Set up Python environment
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
           python-version: '3.x'
 
-      # Step 3: Cache pip dependencies to speed up subsequent runs
       - name: Cache pip dependencies
         uses: actions/cache@v3
         with:
@@ -28,12 +26,10 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-pip-
 
-      # Step 4: Install the dependencies
       - name: Install dependencies
         run: |
           pip install -r requirements.txt
 
-      # Step 5: Run the API job script
       - name: Run API job
         run: |
           python main.py
