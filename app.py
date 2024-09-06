@@ -1,4 +1,4 @@
-from flask import Flask, render_template, redirect, url_for, request, session
+from flask import Flask, render_template, redirect, url_for, request, session, flash
 from flask_login import LoginManager, UserMixin, login_user, logout_user, login_required, current_user
 from werkzeug.security import check_password_hash
 from db.db_connection import get_connection
@@ -59,6 +59,8 @@ def login():
     if current_user.is_authenticated:
         return redirect(url_for('dashboard'))
 
+    error_message = None  # Variable to store error messages
+
     if request.method == 'POST':
         username = request.form['username']
         password = request.form['password']
@@ -70,16 +72,22 @@ def login():
                 user = cursor.fetchone()
                 conn.close()
 
-            if user and check_password_hash(user['password_hash'], password):
-                user_obj = User(user['id'], user['username'])
-                login_user(user_obj)
-                return redirect(url_for('dashboard'))
+            if user:
+                try:
+                    if check_password_hash(user['password_hash'], password):
+                        user_obj = User(user['id'], user['username'])
+                        login_user(user_obj)
+                        return redirect(url_for('dashboard'))
+                    else:
+                        error_message = 'Incorrect password. Please try again.'
+                except ValueError as e:
+                    error_message = f"Password verification failed: {str(e)}"
             else:
-                return 'Invalid username or password', 401
+                error_message = 'Username not found. Please try again.'
         else:
-            return 'Database connection error', 500
+            error_message = 'Database connection error.'
 
-    return render_template('login.html')
+    return render_template('login.html', error_message=error_message)
 
 
 @app.route('/logout', methods=['POST'])
