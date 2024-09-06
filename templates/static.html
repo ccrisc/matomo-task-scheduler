@@ -4,28 +4,48 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}Dashboard{% endblock %}</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css">
-    <link rel="stylesheet" href="https://cdn.datatables.net/2.1.5/css/dataTables.dataTables.css">
+
+    <!-- Normalize CSS for consistent styling across browsers -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css">
+
+    <!-- Bootstrap CSS for responsive design and basic styling -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.2/css/bootstrap.min.css">
+
+    <!-- DataTables CSS for table styling and pagination -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css">
+
+    <!-- Custom CSS for additional styling -->
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 <body>
-    <!-- Header -->
+    <!-- Header Section -->
     <header class="l-header">
         <div class="l-header__inner clearfix">
+            <!-- Hamburger Menu for sidebar toggle -->
             <div class="c-header-icon js-hamburger">
-                <div class="hamburger-toggle"><span class="bar-top"></span><span class="bar-mid"></span><span class="bar-bot"></span></div>
+                <div class="hamburger-toggle">
+                    <span class="bar-top"></span>
+                    <span class="bar-mid"></span>
+                    <span class="bar-bot"></span>
+                </div>
             </div>
+
+            <!-- Header Icons Group -->
             <div class="header-icons-group">
-                <div class="c-header-icon has-dropdown"><span class="c-badge c-badge--red c-badge--header-icon animated swing">13</span><i class="fa fa-bell"></i>
+                <!-- Notifications Dropdown -->
+                <div class="c-header-icon has-dropdown">
+                    <span class="c-badge c-badge--red c-badge--header-icon animated swing">13</span>
+                    <i class="fa fa-bell"></i>
                     <div class="c-dropdown c-dropdown--notifications">
                         <div class="c-dropdown__header"></div>
                         <div class="c-dropdown__content"></div>
                     </div>
                 </div>
+                <!-- Logout Form -->
                 <form action="{{ url_for('logout') }}" method="post" class="logout-form">
-                    <button type="submit" class="c-header-icon logout"><i class="fa fa-power-off"></i></button>
+                    <button type="submit" class="c-header-icon logout">
+                        <i class="fa fa-power-off"></i>
+                    </button>
                 </form>
             </div>
         </div>
@@ -34,7 +54,7 @@
     <!-- Navigation -->
     {% include 'navigation.html' %}
 
-    <!-- Main Content -->
+    <!-- Main Content Section -->
     <main class="l-main">
         <div class="content-wrapper content-wrapper--with-bg">
             {% block content %}
@@ -43,16 +63,25 @@
         </div>
     </main>
 
-    <!-- Footer -->
+    <!-- Footer Section -->
     <footer>
         <!-- Footer content goes here -->
     </footer>
 
-    <!-- Scripts -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <!-- jQuery library for JavaScript functionality -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    <!-- Font Awesome for icons -->
     <script src="https://use.fontawesome.com/releases/v6.6.0/js/all.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
-    <script src="https://cdn.datatables.net/2.1.5/js/jquery.dataTables.min.js"></script>
+
+    <!-- Bootstrap JS for responsive features and components -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+
+    <!-- DataTables JS for table functionalities -->
+    <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+
+    <!-- Custom Scripts -->
     <script src="{{ url_for('static', filename='js/scripts.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/datatable.js') }}"></script>
 </body>
 </html>
