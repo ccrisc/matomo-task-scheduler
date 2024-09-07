@@ -45,7 +45,7 @@ def api_calls():
     conn = get_connection()
     if conn:
         with conn.cursor(cursor_factory=RealDictCursor) as cursor:
-            cursor.execute("SELECT * FROM api_calls ORDER BY timestamp DESC")
+            cursor.execute("SELECT * FROM api_calls ORDER BY created_at DESC")
             api_calls = cursor.fetchall()
             conn.close()
     else:
@@ -63,32 +63,40 @@ def login():
 
     if request.method == 'POST':
         username = request.form['username']
-        password = request.form['encrypted_password']
+        password = request.form['password']
 
         conn = get_connection()
         if conn:
-            with conn.cursor(cursor_factory=RealDictCursor) as cursor:
-                cursor.execute("SELECT id, username, encrypted_password, sign_in_count FROM users WHERE username = %s", (username,))
-                user = cursor.fetchone()
+            try:
+                with conn.cursor(cursor_factory=RealDictCursor) as cursor:
+                    cursor.execute(
+                        "SELECT id, username, encrypted_password, sign_in_count FROM users WHERE username = %s",
+                        (username,))
+                    user = cursor.fetchone()
+
+                if user:
+                    try:
+                        if check_password_hash(user['encrypted_password'], password):
+                            user_obj = User(user['id'], user['username'])
+                            login_user(user_obj)
+
+                            # Increment login_count after successful login
+                            with conn.cursor() as cursor:
+                                cursor.execute("UPDATE users SET sign_in_count = sign_in_count + 1 WHERE id = %s",
+                                               (user['id'],))
+                                conn.commit()
+
+                            return redirect(url_for('dashboard'))
+                        else:
+                            error_message = 'Incorrect password. Please try again.'
+                    except ValueError as e:
+                        error_message = f"Password verification failed: {str(e)}"
+                else:
+                    error_message = 'Username not found. Please try again.'
+            except Exception as e:
+                error_message = f"Database error: {str(e)}"
+            finally:
                 conn.close()
-
-            if user:
-                try:
-                    if check_password_hash(user['encrypted_password'], password):
-                        user_obj = User(user['id'], user['username'])
-                        login_user(user_obj)
-
-                        # Increment login_count after successful login
-                        cursor.execute("UPDATE users SET sign_in_count = sign_in_count + 1 WHERE id = %s", (user['id'],))
-                        conn.commit()
-
-                        return redirect(url_for('dashboard'))
-                    else:
-                        error_message = 'Incorrect password. Please try again.'
-                except ValueError as e:
-                    error_message = f"Password verification failed: {str(e)}"
-            else:
-                error_message = 'Username not found. Please try again.'
         else:
             error_message = 'Database connection error.'
 

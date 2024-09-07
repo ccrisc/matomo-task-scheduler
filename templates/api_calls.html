@@ -23,8 +23,8 @@
                               title="{{ call.status }}">
                         </span>
                     </td>
-                    <td style="text-align: center">{{ call.timestamp.strftime("%d-%m-%Y") }}</td>
-                    <td style="text-align: center">{{ call.timestamp.strftime("%H:%M:%S") }}</td>
+                    <td style="text-align: center">{{ call.created_at.strftime("%d-%m-%Y") }}</td>
+                    <td style="text-align: center">{{ call.created_at.strftime("%H:%M:%S") }}</td>
                     <td style="text-align: right">{{ call.total_rows_found }}</td>
                     <td style="text-align: center">
                         {% if call.error_message %}
