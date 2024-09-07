@@ -2,7 +2,7 @@ import requests
 import os
 from db.insert_data import insert_data, log_api_call
 
-API_URL = os.getenv('API_URL')
+API_URL = os.getenv('MATOMO_API_URL')
 
 def fetch_data(url):
     """Fetch data from the API, handle errors, and log the call."""
