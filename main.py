@@ -1,6 +1,10 @@
 import requests
 import os
 from db.insert_data import insert_data, log_api_call
+# Load environment variables if in development
+if os.getenv('ENVIRONMENT') == 'development':
+    from dotenv import load_dotenv
+    load_dotenv()
 
 API_URL = os.getenv('MATOMO_API_URL')
 
@@ -8,7 +12,7 @@ def fetch_data(url):
     """Fetch data from the API, handle errors, and log the call."""
     try:
         response = requests.get(url)
-        response.raise_for_status()
+        response.raise_for_status() # Raise an exception for HTTP error responses
 
         data = response.json()
 
@@ -21,10 +25,6 @@ def fetch_data(url):
         # Log successful API call with no error message
         log_api_call(status="success", status_code=response.status_code, total_rows_found=total_rows,
                      error_message=None)
-
-        # Print the response data
-        print("Fetched Data:", data)  # <-- Print the fetched data to verify structure
-        return data
 
     except requests.RequestException as e:
         log_api_call(status="failure", status_code=getattr(e.response, 'status_code', 'N/A'), total_rows_found=0,

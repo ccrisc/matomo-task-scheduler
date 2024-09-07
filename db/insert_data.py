@@ -11,12 +11,12 @@ def log_api_call(status, status_code, total_rows_found, error_message):
 
     # SQL query to log API call details
     sql = """
-    INSERT INTO api_calls (status, status_code, total_rows_found, error_message)
+    INSERT INTO api_calls (status_code, status, total_rows_found, error_message)
     VALUES (%s, %s, %s, %s)
     """
 
     try:
-        cursor.execute(sql, (status, status_code, total_rows_found, error_message))
+        cursor.execute(sql, (status_code, status, total_rows_found, error_message))
         conn.commit()
     except Exception as e:
         print(f"Failed to log API call: {e}")
