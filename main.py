@@ -28,6 +28,7 @@ def fetch_data(url):
         # Log successful API call with no error message
         log_api_call(status="success", status_code=response.status_code, total_rows_found=total_rows,
                      error_message=None)
+        return data
 
     except requests.RequestException as e:
         log_api_call(status="failure", status_code=getattr(e.response, 'status_code', 'N/A'), total_rows_found=0,

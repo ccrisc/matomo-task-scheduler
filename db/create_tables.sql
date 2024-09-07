@@ -18,19 +18,31 @@ CREATE TABLE users (
     updated_at TIMESTAMPTZ DEFAULT NOW()
 );
 
-
 CREATE TABLE daily_visits (
     id SERIAL PRIMARY KEY,
     id_visit INT NOT NULL UNIQUE,
     visit_ip VARCHAR,
-    visitor_id varchar,
-    visit_count integer,
-    visit_entry_id_action integer,
-    visit_exit_id_action integer,
-    device_type varchar,
-    visit_duration_seconds integer,
-    server_time timestamp,
-    created_at timestamp
+    visitor_id VARCHAR,
+    user_id VARCHAR,
+    visitor_type VARCHAR,
+    visit_count INTEGER,
+    visit_duration INTEGER,
+    number_of_actions INTEGER,
+    number_of_interactions INTEGER,
+    number_of_events INTEGER,
+    device_type VARCHAR,
+    device_brand VARCHAR,
+    operating_system VARCHAR,
+    device_model VARCHAR,
+    browser_name VARCHAR,
+    country VARCHAR,
+    latitude VARCHAR,
+    longitude VARCHAR,
+    seconds_since_first_visit INTEGER,
+    seconds_since_last_visit INTEGER,
+    resolution VARCHAR,
+    server_time TIMESTAMPTZ,
+    created_at TIMESTAMPTZ DEFAULT NOW()
 );
 
 CREATE TABLE action_details (
@@ -38,7 +50,7 @@ CREATE TABLE action_details (
     daily_visit_id INT NOT NULL,
     type varchar,
     url varchar,
-    page_view_identifier varchar,
+    page_view_identifier varchar NOT NULL UNIQUE,
     page_id_action integer,
     timestamp timestamp,
     page_view_position integer,
