@@ -8,7 +8,7 @@ let DataTableManager = (() => {
 
             $(this).DataTable({
                 "paging": true,     // Enable pagination
-                "searching": true,  // Enable search/filter
+                "searching": false,  // Enable search/filter
                 "info": true,       // Show table information
                 "ordering": true,   // Enable column ordering
                 "pageLength": 5,    // Set the number of rows per page
