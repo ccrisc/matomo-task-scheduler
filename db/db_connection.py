@@ -17,7 +17,7 @@ def get_connection():
         print(f"Database connection error: {e}")
         return None
 
-# generate new user password
+# generate new user encrypted password
 # from werkzeug.security import generate_password_hash
 # password = "12345678"
 # hashed_password = generate_password_hash(password, method='pbkdf2:sha256')

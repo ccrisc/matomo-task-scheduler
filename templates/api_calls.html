@@ -3,28 +3,28 @@
 {% block content %}
     <h1 class="page-title">Matomo API Status</h1>
     <div class="page-content">
-        <table id="apiCallsTable" class="datatable display" style="width: 100%; margin-top: 20px;">
+        <table class="datatable table-condensed">
             <thead>
                 <tr>
-                    <th style="border: 1px solid #ddd; padding: 8px;">Time</th>
-                    <th style="border: 1px solid #ddd; padding: 8px;">Status</th>
-                    <th style="border: 1px solid #ddd; padding: 8px;">Total Rows</th>
-                    <th style="border: 1px solid #ddd; padding: 8px;">Error Message</th>
+                    <th></th>
+                    <th style="text-align: center">Time</th>
+                    <th style="text-align: center">Total Rows</th>
+                    <th style="text-align: center">Error Message</th>
                 </tr>
             </thead>
             <tbody>
                 {% for call in api_calls %}
                 <tr>
-                    <td style="border: 1px solid #ddd; padding: 8px;">{{ call.timestamp.strftime("%d-%m-%Y") }}</td>
-                    <td style="border: 1px solid #ddd; padding: 8px;">
-                        {{ call.status_code }}
+                    <td style="text-align: center">
                         <span class="status-indicator"
-                              style="display: inline-block; width: 10px; height: 10px; border-radius: 50%;
-                                     background-color: {% if call.status_code == 200 %}green{% else %}red{% endif %}; margin-left: 10px;">
+                              style="background-color: {% if call.status_code == 200 %}green{% else %}red{% endif %}"
+                              data-toggle="tooltip"
+                              title="{{ call.status }}">
                         </span>
                     </td>
-                    <td style="border: 1px solid #ddd; padding: 8px;">{{ call.total_rows }}</td>
-                    <td style="border: 1px solid #ddd; padding: 8px;">{{ call.error_message }}</td>
+                    <td>{{ call.timestamp.strftime("%d-%m-%Y") }}</td>
+                    <td>{{ call.total_rows }}</td>
+                    <td>{{ call.error_message }}</td>
                 </tr>
                 {% endfor %}
             </tbody>

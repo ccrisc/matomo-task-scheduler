@@ -63,20 +63,25 @@ def login():
 
     if request.method == 'POST':
         username = request.form['username']
-        password = request.form['password']
+        password = request.form['encrypted_password']
 
         conn = get_connection()
         if conn:
             with conn.cursor(cursor_factory=RealDictCursor) as cursor:
-                cursor.execute("SELECT id, username, password_hash FROM users WHERE username = %s", (username,))
+                cursor.execute("SELECT id, username, encrypted_password, sign_in_count FROM users WHERE username = %s", (username,))
                 user = cursor.fetchone()
                 conn.close()
 
             if user:
                 try:
-                    if check_password_hash(user['password_hash'], password):
+                    if check_password_hash(user['encrypted_password'], password):
                         user_obj = User(user['id'], user['username'])
                         login_user(user_obj)
+
+                        # Increment login_count after successful login
+                        cursor.execute("UPDATE users SET sign_in_count = sign_in_count + 1 WHERE id = %s", (user['id'],))
+                        conn.commit()
+
                         return redirect(url_for('dashboard'))
                     else:
                         error_message = 'Incorrect password. Please try again.'

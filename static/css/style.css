@@ -29,6 +29,10 @@ p {
   color: #ababab;
 }
 
+a {
+  text-decoration: none;
+}
+
 h1 {
   font-size: 24px;
 }
@@ -486,5 +490,4 @@ main.l-main .page-title {
     width: 10px;
     height: 10px;
     border-radius: 50%;
-    margin-left: 8px; /* Adjust spacing between status code and indicator */
 }
