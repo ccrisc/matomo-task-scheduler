@@ -3,6 +3,7 @@ from flask_login import LoginManager, UserMixin, login_user, logout_user, login_
 from werkzeug.security import check_password_hash
 from db.db_connection import get_connection
 from psycopg2.extras import RealDictCursor
+from datetime import timedelta
 import os
 
 app = Flask(__name__)
@@ -13,6 +14,8 @@ login_manager = LoginManager()
 login_manager.init_app(app)
 login_manager.login_view = 'login'
 
+# Set session timeout to 30 minutes
+app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(minutes=30)
 
 class User(UserMixin):
     def __init__(self, id, username):
@@ -80,6 +83,9 @@ def login():
                             user_obj = User(user['id'], user['username'])
                             login_user(user_obj)
 
+                            # Make the session permanent so the timeout applies
+                            session.permanent = True
+
                             # Increment login_count after successful login
                             with conn.cursor() as cursor:
                                 cursor.execute("UPDATE users SET sign_in_count = sign_in_count + 1 WHERE id = %s",
@@ -108,6 +114,12 @@ def login():
 def logout():
     logout_user()
     return redirect(url_for('login'))
+
+
+# Update the session timeout on each request
+@app.before_request
+def update_session_timeout():
+    session.modified = True
 
 
 if __name__ == "__main__":
