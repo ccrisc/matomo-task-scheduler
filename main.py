@@ -1,18 +1,22 @@
 import requests
 import os
 from db.insert_data import insert_data, log_api_call
+
 # Load environment variables if in development
 if os.getenv('ENVIRONMENT') == 'development':
     from dotenv import load_dotenv
+
     load_dotenv()
 
 API_URL = os.getenv('MATOMO_API_URL')
 
+
+# Fetch data from the API, handle errors, and log the call into db.
 def fetch_data(url):
-    """Fetch data from the API, handle errors, and log the call."""
     try:
         response = requests.get(url)
-        response.raise_for_status() # Raise an exception for HTTP error responses
+        # Raise an exception for HTTP error responses
+        response.raise_for_status()
 
         data = response.json()
 
@@ -29,24 +33,23 @@ def fetch_data(url):
     except requests.RequestException as e:
         log_api_call(status="failure", status_code=getattr(e.response, 'status_code', 'N/A'), total_rows_found=0,
                      error_message=str(e))
-        print(f"API Request failed: {e}")
         return None
 
     except ValueError as e:
         log_api_call(status="failure", status_code=response.status_code if 'response' in locals() else 'N/A',
                      total_rows_found=0, error_message=f"JSON decoding failed: {e}")
-        print(f"API Response decoding failed: {e}")
         return None
+
 
 def main():
     """Main function to fetch data and insert it into the database."""
     data = fetch_data(API_URL)
 
     if data:
-        # Insert data into the database if fetching was successful
-        insert_data(data)
+        insert_data(data)  # Insert data into the database if fetching was successful
     else:
         print("No data to insert into the database.")
+
 
 if __name__ == "__main__":
     main()

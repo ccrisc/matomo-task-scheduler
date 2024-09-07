@@ -3,7 +3,7 @@
 {% block content %}
     <h1 class="page-title">Matomo API Status</h1>
     <div class="page-content">
-        <table class="datatable table-condensed">
+        <table class="datatable table table-condensed table-hover">
             <thead>
                 <tr>
                     <th></th>
@@ -26,7 +26,15 @@
                     <td style="text-align: center">{{ call.timestamp.strftime("%d-%m-%Y") }}</td>
                     <td style="text-align: center">{{ call.timestamp.strftime("%H:%M:%S") }}</td>
                     <td style="text-align: right">{{ call.total_rows_found }}</td>
-                    <td>{{ call.error_message }}</td>
+                    <td style="text-align: center">
+                        {% if call.error_message %}
+                            <span data-toggle="tooltip" title="{{ call.error_message }}">
+                                {{ call.error_message[:16] }}{% if call.error_message|length > 16 %}...{% endif %}
+                            </span>
+                        {% else %}
+                            None
+                        {% endif %}
+                    </td>
                 </tr>
                 {% endfor %}
             </tbody>
