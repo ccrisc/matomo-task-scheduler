@@ -148,6 +148,7 @@ In the users table you have an overview of all your users that have an account. 
 
 <img width="1386" alt="Screenshot 2024-09-08 alle 21 03 16" src="https://github.com/user-attachments/assets/cbfb39b6-a4dc-47c4-94ed-0eff997cd23a">
 
+
 **CRUD Operations:** 
 
 You can create a NEW USER by clicking the button on the top right of the table. You will be asked to specify the username, the password and if the user is an admin or not.
