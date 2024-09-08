@@ -31,8 +31,6 @@
                             <span data-toggle="tooltip" title="{{ api_call.error_message }}">
                                 {{ api_call.error_message[:16] }}{% if api_call.error_message|length > 16 %}...{% endif %}
                             </span>
-                        {% else %}
-                            None
                         {% endif %}
                     </td>
                 </tr>
