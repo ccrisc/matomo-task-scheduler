@@ -2,10 +2,10 @@ import requests
 import os
 from db.insert_data import insert_data, log_api_call
 
-# # Load environment variables if in development
-# if os.getenv('ENVIRONMENT') == 'development':
-#     from dotenv import load_dotenv
-#     load_dotenv()
+# Load environment variables if in development
+if os.getenv('ENVIRONMENT') == 'development':
+    from dotenv import load_dotenv
+    load_dotenv()
 
 API_URL = os.getenv('MATOMO_API_URL')
 

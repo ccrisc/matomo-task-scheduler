@@ -31,5 +31,12 @@ jobs:
           pip install -r requirements.txt
 
       - name: Run API job
+        env:
+          SUPABASE_HOST: ${{ secrets.SUPABASE_HOST }}
+          SUPABASE_PORT: ${{ secrets.SUPABASE_PORT }}
+          SUPABASE_DB_NAME: ${{ secrets.SUPABASE_DB_NAME }}
+          SUPABASE_USER: ${{ secrets.SUPABASE_USER }}
+          SUPABASE_PASSWORD: ${{ secrets.SUPABASE_PASSWORD }}
+          MATOMO_API_URL: ${{ secrets.MATOMO_API_URL }}
         run: |
           python main.py
