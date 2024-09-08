@@ -5,21 +5,23 @@
     <div class="page-content">
         <div class="dashboard-box">
             <div class="row">
-                <div class="col-md-4 card-container">
-                    <div class="card">
-                        <div class="card-body">
-                            <div class="d-flex align-items-center">
-                                <h5 class="card-title mb-0">API status</h5>
-                                <span class="status-indicator ms-2"
-                                  style="background-color: {% if last_api_call.status_code == 200 %}green{% else %}red{% endif %}"
-                                  data-toggle="tooltip"
-                                  title="{{ last_api_call.status }}">
-                                </span>
+                {% if last_api_call %}
+                    <div class="col-md-4 card-container">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="d-flex align-items-center">
+                                    <h5 class="card-title mb-0">API status</h5>
+                                    <span class="status-indicator ms-2"
+                                      style="background-color: {% if last_api_call.status_code == 200 %}green{% else %}red{% endif %}"
+                                      data-toggle="tooltip"
+                                      title="{{ last_api_call.status }}">
+                                    </span>
+                                </div>
+                                <p class="card-text">{{ last_api_call.created_at.strftime("%d-%m-%Y %H:%M") }}</p>
                             </div>
-                            <p class="card-text">{{ last_api_call.created_at.strftime("%d-%m-%Y %H:%M") }}</p>
                         </div>
                     </div>
-                </div>
+                {% endif %}
             </div>
             {#            <h2>Last API Call Status</h2>#}
             {#            {% if last_api_call %}#}
