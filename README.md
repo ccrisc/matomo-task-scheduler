@@ -36,12 +36,15 @@
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
-This web app designed in Flask is built to perform daily a scheduled API call from matomo analytics, download data and store it into PostgreSQL database.
+This web app designed in Flask is built to perform daily a scheduled API call from matomo analytics, the fetched data is stored it into a database and the interface serves as a management system to look aut for the API status and data statistics
 
-<img width="1792" alt="Screenshot 2024-07-29 alle 08 57 09" src="https://github.com/user-attachments/assets/0c71dc2f-f8ae-45ec-be30-a34dc16d4987">
+The API call performed from matomo is **Live.getLastVisitsDetails** you can read the matomo API documentation [here](https://developer.matomo.org/api-reference/reporting-api)
+
+<img width="1454" alt="Screenshot 2024-09-08 alle 20 31 55" src="https://github.com/user-attachments/assets/04fc797f-6a5b-417e-ac90-d6ab1520b8ec">
 
 Main functionalities:
 * API calls from Matomo Analytics
+* CRUD Operations
 * DB operations
 * Scheduled jobs
 * Automatic deployment
@@ -54,81 +57,119 @@ Main functionalities:
 
   
   <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/python/python-original.svg" width="40" height="40" />
+  <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/css3/css3-original-wordmark.svg" alt="css3" width="40" height="40"/>
+  <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/html5/html5-original-wordmark.svg" alt="html5" width="40" height="40"/>
+  <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/javascript/javascript-original.svg" alt="javascript" width="40" height="40"/>
   <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/flask/flask-original.svg" width="40" height="40" />
   <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/postgresql/postgresql-original.svg" width="40" height="40" />
+  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/githubactions/githubactions-original.svg" width="40" height="40" />
   <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/supabase/supabase-original.svg" width="40" height="40" />
   <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/vercel/vercel-original.svg" width="40" height="40" />
+  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/pycharm/pycharm-original.svg" width="40" height="40" />
           
           
 </p>
+
+* The application environment is built with Flask. 
+* The postgreSQL db is hosted with Supabase. 
+* The app is deployed on Vercel. 
+* The scheduled job is performed with Github Actions
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 <!-- GETTING STARTED -->
 ## Getting Started
+
 To get a local copy up and running follow be ture to have the following steps checked.
 
 ### Prerequisites
 
 * Make sure you have pip installed 
-* Create a DB instance on supabase
-* Create necessary DB tables. You can find all the CREATE queries in [db/create_tables.sql](db%2Fcreate_tables.sql)
-* Install necessary packages
-  ```sh
-  pip install -r requirements.txt
-  ```
+* Create your DB instance.
+* Create necessary DB tables. You can execute all the CREATE queries in [db/create_tables.sql](db%2Fcreate_tables.sql)
 
 
 ### Installation
 
 1. Clone the repo
    ```sh
-   git clone https://github.com/ccrisc/rent_items_management.git
+   git clone https://github.com/ccrisc/matomo.git
    ```
-2. Enter your DB credentials in `config.php`
+2. Install necessary packages
+  ```sh
+  pip install -r requirements.txt
+  ```
+3. Create a `.env` file and define the following variables
     ```php
-   define('DB_NAME', '*****');
-   define('DB_USER', '*****');
-   define('DB_PASSWORD', '*****');
-   define('DB_HOST', '*****:3306');;
+   ENVIRONMENT=development
+   SUPABASE_HOST=localhost
+   SUPABASE_PORT=5432
+   SUPABASE_DB_NAME=matomo_task_scheduler
+   SUPABASE_PASSWORD=xxxx
+   SUPABASE_USER=xxxx
+   FLASK_SECRET_KEY=xxxx
+   MATOMO_API_URL=xxxx
    ```
-3. You can create schema and tables by executing the SQL from the `demo_dump` folder fo getting started
-4. Run your local PHP server (if you are using PHPStorm you can set up your server following <a href="http://www.php.cn/faq/738624.html">these instructions</a>)
+5. Start your Flask app
    ```sh
    python app.py
    ```
-5. Visit http://127.0.0.1:5000
+6. Visit http://127.0.0.1:5000
+
+### Set up production environment
+
+
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
+
 
 
 <!-- USAGE EXAMPLES -->
 ## Usage
 
-### Add new customer
-You can add a new customer by clicking the orange button on the main page, the form allows to insert first name and last name
-<img width="1792" alt="Screenshot 2024-07-29 alle 09 10 22" src="https://github.com/user-attachments/assets/45beedfc-7a50-4ca8-90d8-d82d5e8e8878">
+### Login
+Login with your user credentials. If you successfully set up the db you can log in with the following credentials:
+username: demo
+password: abcd
+<img width="823" alt="Screenshot 2024-09-08 alle 20 29 07" src="https://github.com/user-attachments/assets/e1cc7870-347a-4dc7-9f8d-eb22e957eacc">
+You will be automatically logged out after 30 minutes of inactivity
 
-### New Order
-In a single order you can add multiple items and different quantities for each. At the bottom you have to specify the customer the return date and the order number.
-<img width="1307" alt="Screenshot 2024-07-29 alle 09 10 47" src="https://github.com/user-attachments/assets/06ad8e26-e67d-4d70-b74b-145438a38f42">
+### Dashboard
+The dashboard shows on the left the navigation sidebar. You can expand it by clicking on the burger menu.
+On the top right you can perform log out and read the latest messages.
+
+The dashboard shows the last api call status if it was successful or if it failed and datetime of when it was performed.
+<img width="1454" alt="Screenshot 2024-09-08 alle 20 56 24" src="https://github.com/user-attachments/assets/575fe38d-0664-49f4-95be-6b50c2fbefd4">
+
+### Users
+Only if the current user logged has admin privilege he can access the users management section.
+
+In the users table you have an overview of all your users that have an account. The table can be filtered by column
+
+<img width="1386" alt="Screenshot 2024-09-08 alle 21 03 16" src="https://github.com/user-attachments/assets/cbfb39b6-a4dc-47c4-94ed-0eff997cd23a">
+
+**CRUD Operations:** 
+
+You can create a NEW USER by clicking the button on the top right of the table. You will be asked to specify the username, the password and if the user is an admin or not.
+
+<img width="1386" alt="Screenshot 2024-09-08 alle 21 10 18" src="https://github.com/user-attachments/assets/5a61b324-9138-4ffd-a82d-3009e80a5855">
+
+By clicking the EDIT button you can proceed to edit data for that specific user
+
+By clicking the DELETE button you will remove the selected user. You will be asked for confirmation prior irreversible delete.
+
+<img width="1374" alt="Screenshot 2024-09-08 alle 21 14 28" src="https://github.com/user-attachments/assets/a0f1c51a-a899-415f-8b3c-b3d9b8c3630b">
 
 
-### Orders Management
-In the order management table you have an overview of all your orders. 
-<img width="1269" alt="Screenshot 2024-07-29 alle 09 10 57" src="https://github.com/user-attachments/assets/fd5ec400-e58d-4363-803b-36ec39cab27c">
-In the table you see the column state that indicates if the order has been closed (green) or if it still active (orange).
-At the same time the column return date signal if the return date is past (red) or not yet arrived.
+### Api Calls
 
-By clicking the DETAIL button you get the order overview. If the order is still active you can proceed to close it, if the customer return all the items or to close it partially.
-<div style="display: flex; gap: 10px;">
-  <img width="315" alt="Screenshot 2024-07-29 alle 09 13 28" src="https://github.com/user-attachments/assets/d1560cce-18b0-43a5-b740-03f0dc880006">
-  <img width=315" alt="Screenshot 2024-07-29 alle 09 13 21" src="https://github.com/user-attachments/assets/5504b9ce-e88f-46ff-a991-2144adbb8c13">
-</div>
+Here you will have an overview of all the API calls performed and if they were successful or not.
+In the table you see the column state that indicates if the call was successful (green) or if it failed (red).
+At the same time if the call failed then it will be shown the details of the error.
 
-When you proceed to close an order partially you will be asked to specify for each article the quantity that the user has returned. The difference will be calculated in the backend and added to the not returned items for that specific user.
-<img width="1225" alt="Screenshot 2024-07-29 alle 09 19 45" src="https://github.com/user-attachments/assets/382164b3-f1e8-4158-aabc-5123ab4e1451">
+<img width="1374" alt="Screenshot 2024-09-08 alle 21 17 06" src="https://github.com/user-attachments/assets/8f205556-a2b2-4f7f-904b-70faed3e05fd">
 
+### Statistics
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -138,7 +179,7 @@ When you proceed to close an order partially you will be asked to specify for ea
 
 Contributions are what make the open source community such an amazing place to learn, inspire, and create. Any contributions you make are **greatly appreciated**.
 
-If you think you found a bug in this repo, you can [submit an issue](https://github.com/ccrisc/rent_items_management/issues/new/choose).
+If you think you found a bug in this repo, you can [submit an issue](https://github.com/ccrisc/matomo-task-scheduler/issues/new/choose).
 
 If you have a suggestion that would make this better, please fork the repo and create a pull request. You can also simply open an issue with the tag "enhancement".
 Don't forget to give the project a star!

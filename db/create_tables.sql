@@ -11,6 +11,7 @@ CREATE TABLE users (
     updated_at TIMESTAMPTZ DEFAULT NOW()
 );
 
+-- INSERT INTO users (id, username, encrypted_password, admin, sign_in_count, created_at, updated_at, last_sign_in_at) VALUES (1, 'demo', 'pbkdf2:sha256:600000$PzxlSZY9TADyOQ88$004ba5f704d7c18cd96a61e870b335fe357d87ba2d414e4040429dbfe3ed8719', true, 0, '2024-09-08 18:53:42.938455 +00:00', '2024-09-08 18:53:42.938455 +00:00', null);
 
 CREATE TABLE api_calls (
     id SERIAL PRIMARY KEY,
