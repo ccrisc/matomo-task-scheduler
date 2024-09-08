@@ -129,9 +129,12 @@ To get a local copy up and running be sure to have the following steps checked.
 
 ### Login
 Login with your user credentials. If you successfully set up the db you can log in with the following credentials:
+
 username: demo
 password: abcd
+
 <img width="823" alt="Screenshot 2024-09-08 alle 20 29 07" src="https://github.com/user-attachments/assets/e1cc7870-347a-4dc7-9f8d-eb22e957eacc">
+
 You will be automatically logged out after 30 minutes of inactivity
 
 ### Dashboard
