@@ -80,7 +80,7 @@ Main functionalities:
 <!-- GETTING STARTED -->
 ## Getting Started
 
-To get a local copy up and running follow be ture to have the following steps checked.
+To get a local copy up and running be sure to have the following steps checked.
 
 ### Prerequisites
 
