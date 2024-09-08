@@ -15,7 +15,7 @@ def get_connection():
         return conn
     except psycopg2.Error as e:
         print(f"Database connection error: {e}")
-        return None
+        raise e  # Raise the exception to ensure the job fails
 
 # generate new user encrypted password
 # from werkzeug.security import generate_password_hash
