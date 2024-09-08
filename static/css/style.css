@@ -491,3 +491,147 @@ main.l-main .page-title {
     height: 10px;
     border-radius: 50%;
 }
+
+.dashboard-cards {
+  position: relative;
+  padding: 30px;
+  margin: 0 !important;
+}
+
+.dashboard-cards .card {
+  background: #ffffff;
+  display: inline-block;
+  perspective: 1000px;
+  margin: 5px;
+  position: relative;
+  text-align: left;
+  transition: all 0.3s ease-in;
+  width: calc(33.33333333% - 10px);
+  cursor: pointer;
+  overflow: hidden;
+}
+
+.dashboard-cards .card:hover {
+  box-shadow: 0 15px 10px -10px rgba(31, 31, 31, 0.5);
+}
+
+.dashboard-cards .card .card-title {
+  background: #ffffff;
+  padding: 20px 15px;
+  position: relative;
+}
+
+.dashboard-cards .card .card-title h2 {
+  font-size: 24px;
+  margin: 0;
+  padding: 0;
+}
+
+.dashboard-cards .card .card-title small {
+  display: block;
+  font-size: 14px;
+  margin-top: 8px;
+}
+
+.dashboard-cards .card .task-count {
+  width: 40px;
+  height: 40px;
+  position: absolute;
+  top: 22px;
+  right: 10px;
+  background: #ecf0f1;
+  text-align: center;
+  line-height: 40px;
+  border-radius: 50%;
+  color: #333333;
+  font-weight: 600;
+}
+
+.dashboard-cards .card .card-description {
+  position: absolute;
+  width: 100%;
+  transform: rotateX(-90deg);
+  transform-origin: top;
+  background: #d9d9d9;
+  transition: all 0.3s ease;
+  padding: 10px 15px 0 15px;
+  border-top: 1px solid #ddd;
+}
+
+.dashboard-cards .card .card-actions {
+  padding: 10px;
+  text-align: center;
+  background: #ffffff;
+  box-shadow: 0 2px 0px 0 rgba(0, 0, 0, 0.075);
+}
+
+.dashboard-cards .card .card-flap {
+  position: absolute;
+  width: 100%;
+  transform-origin: top;
+}
+
+.dashboard-cards .card .flap1 {
+  transition: all 0.3s ease;
+  z-index: -1;
+}
+
+.dashboard-cards .card .flap2 {
+  transition: all 0.3s ease;
+  z-index: -2;
+}
+
+.dashboard-cards.showing .card {
+  cursor: pointer;
+  opacity: 0.6;
+  transform: scale(0.88);
+}
+
+.dashboard-cards .card.d-card-show {
+  opacity: 1 !important;
+  transform: scale(1) !important;
+}
+
+.dashboard-cards .card.d-card-show .card-flap {
+  background: #ffffff;
+  transform: rotateX(0deg);
+}
+
+.dashboard-cards .card.d-card-show .flap1 {
+  transition: all 0.3s ease;
+}
+
+.dashboard-cards .card.d-card-show .flap2 {
+  transition: all 0.3s ease;
+}
+
+.dashboard-cards .task-list {
+  padding: 0 !important;
+}
+
+.dashboard-cards .task-list li {
+  padding: 10px 0;
+  padding-left: 10px;
+  margin: 3px 0;
+  list-style-type: none;
+  border-bottom: 1px solid #e9ebed;
+  border-left: 3px solid #f36525;
+}
+
+.dashboard-cards .task-list li:hover {
+  background: #ecf0f1;
+}
+
+.dashboard-cards .task-list li span {
+  float: right;
+  color: #f36525;
+  margin-right: 5px;
+}
+
+.dashboard-cards .card-actions .btn {
+  color: #333;
+}
+
+.dashboard-cards .card-actions .btn:hover {
+  color: #f36525;
+}

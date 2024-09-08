@@ -1,0 +1,25 @@
+{% extends "static.html" %}
+
+{% block content %}
+    <h1 class="page-title">Statistics</h1>
+    <div class="page-content">
+        <form id="filter-form">
+            <label for="start_date">Start Date:</label>
+            <input type="date" id="start_date" name="start_date">
+
+            <label for="end_date">End Date:</label>
+            <input type="date" id="end_date" name="end_date">
+
+            <button class="btn" type="submit">Apply Filters</button>
+        </form>
+
+        <hr>
+
+        <h2>Visits by Device Type</h2>
+        <canvas id="deviceChart"></canvas>
+
+        <h2>Visits by Browser</h2>
+        <canvas id="browserChart"></canvas>
+    </div>
+{% endblock %}
+

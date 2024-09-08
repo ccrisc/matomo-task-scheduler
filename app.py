@@ -1,4 +1,4 @@
-from flask import Flask, render_template, redirect, url_for, request, session, flash
+from flask import Flask, render_template, redirect, url_for, request, session, flash, jsonify
 from flask_login import LoginManager, UserMixin, login_user, logout_user, login_required, current_user
 from werkzeug.security import check_password_hash
 from db.db_connection import get_connection
@@ -39,8 +39,19 @@ def load_user(user_id):
 @app.route('/')
 @login_required
 def dashboard():
-    return render_template('dashboard.html')
+    conn = get_connection()
+    last_api_call = None
 
+    if conn:
+        try:
+            with conn.cursor(cursor_factory=RealDictCursor) as cursor:
+                # Fetch the last API call
+                cursor.execute("SELECT * FROM api_calls ORDER BY created_at DESC LIMIT 1")
+                last_api_call = cursor.fetchone()
+        finally:
+            conn.close()
+
+    return render_template('dashboard.html', last_api_call=last_api_call)
 
 @app.route('/api_calls')
 @login_required
@@ -56,6 +67,48 @@ def api_calls():
 
     return render_template('api_calls.html', api_calls=api_calls)
 
+
+@app.route('/stats')
+@login_required
+def stats():
+    return render_template('stats.html')
+
+# API route to get filtered data for the charts
+@app.route('/api/stats', methods=['POST'])
+@login_required
+def get_filtered_stats():
+    data = request.json
+    start_date = data.get('start_date')
+    end_date = data.get('end_date')
+    device_type = data.get('device_type')
+
+    conn = get_connection()
+    stats = {}
+    filters = []
+    if conn:
+        try:
+            with conn.cursor(cursor_factory=RealDictCursor) as cursor:
+                query = """
+                    SELECT COUNT(*) AS total_visits, 
+                           AVG(visit_duration) AS avg_visit_duration, 
+                           device_type, browser_name 
+                    FROM daily_visits WHERE TRUE
+                """
+                # Apply filters if they exist
+                if start_date and end_date:
+                    query += " AND server_time BETWEEN %s AND %s"
+                    filters.extend([start_date, end_date])
+
+                query += " GROUP BY device_type, browser_name"
+                cursor.execute(query, tuple(filters))
+                stats = cursor.fetchall()
+
+        except Exception as e:
+            return jsonify({'error': str(e)}), 500
+        finally:
+            conn.close()
+
+    return jsonify(stats), 200
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():

@@ -1,5 +1,16 @@
 -- CREATE DATABASE matomo_task_scheduler;
 
+CREATE TABLE users (
+    id SERIAL PRIMARY KEY,
+    username VARCHAR(50) UNIQUE NOT NULL,
+    encrypted_password varchar default ''::character varying not null,
+    admin boolean,
+    sign_in_count INT DEFAULT 0,
+    created_at TIMESTAMPTZ DEFAULT NOW(),
+    updated_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+
 CREATE TABLE api_calls (
     id SERIAL PRIMARY KEY,
     created_at TIMESTAMPTZ DEFAULT NOW(),
@@ -7,15 +18,6 @@ CREATE TABLE api_calls (
     status varchar,
     total_rows_found INT,
     error_message TEXT DEFAULT NULL
-);
-
-CREATE TABLE users (
-    id SERIAL PRIMARY KEY,
-    username VARCHAR(50) UNIQUE NOT NULL,
-    encrypted_password varchar default ''::character varying not null,
-    sign_in_count INT DEFAULT 0,
-    created_at TIMESTAMPTZ DEFAULT NOW(),
-    updated_at TIMESTAMPTZ DEFAULT NOW()
 );
 
 CREATE TABLE daily_visits (

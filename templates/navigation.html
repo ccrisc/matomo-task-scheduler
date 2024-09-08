@@ -1,6 +1,6 @@
 <div class="l-sidebar">
     <div class="logo">
-        <div class="logo__txt">D</div>
+        <div class="logo__txt">UZH</div>
     </div>
     <div class="l-sidebar__content">
         <nav class="c-menu js-menu">
@@ -18,6 +18,14 @@
                         <i class="fa-solid fa-list-check"></i>
                         <div class="c-menu-item__title">
                             <span>API status</span>
+                        </div>
+                    </a>
+                </li>
+                <li class="c-menu__item {{ 'is-active' if request.endpoint == 'stats' else '' }}" data-toggle="tooltip" title="Statistics">
+                    <a class="c-menu__item__inner" href="{{ url_for('stats') }}">
+                        <i class="fa-solid fa-chart-pie"></i>
+                        <div class="c-menu-item__title">
+                            <span>Statistics</span>
                         </div>
                     </a>
                 </li>

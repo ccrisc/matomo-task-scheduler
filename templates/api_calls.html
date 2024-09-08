@@ -14,22 +14,22 @@
                 </tr>
             </thead>
             <tbody>
-                {% for call in api_calls %}
+                {% for api_call in api_calls %}
                 <tr>
                     <td style="text-align: center">
                         <span class="status-indicator"
-                              style="background-color: {% if call.status_code == 200 %}green{% else %}red{% endif %}"
+                              style="background-color: {% if api_call.status_code == 200 %}green{% else %}red{% endif %}"
                               data-toggle="tooltip"
-                              title="{{ call.status }}">
+                              title="{{ api_call.status }}">
                         </span>
                     </td>
-                    <td style="text-align: center">{{ call.created_at.strftime("%d-%m-%Y") }}</td>
-                    <td style="text-align: center">{{ call.created_at.strftime("%H:%M:%S") }}</td>
-                    <td style="text-align: right">{{ call.total_rows_found }}</td>
+                    <td style="text-align: center">{{ api_call.created_at.strftime("%d-%m-%Y") }}</td>
+                    <td style="text-align: center">{{ api_call.created_at.strftime("%H:%M:%S") }}</td>
+                    <td style="text-align: right">{{ api_call.total_rows_found }}</td>
                     <td style="text-align: center">
-                        {% if call.error_message %}
-                            <span data-toggle="tooltip" title="{{ call.error_message }}">
-                                {{ call.error_message[:16] }}{% if call.error_message|length > 16 %}...{% endif %}
+                        {% if api_call.error_message %}
+                            <span data-toggle="tooltip" title="{{ api_call.error_message }}">
+                                {{ api_call.error_message[:16] }}{% if api_call.error_message|length > 16 %}...{% endif %}
                             </span>
                         {% else %}
                             None
