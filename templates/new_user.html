@@ -1,0 +1,19 @@
+{% extends "static.html" %}
+
+{% block content %}
+    <h1 class="page-title">Create New User</h1>
+    <div class="page-content">
+        <form action="{{ url_for('new_user') }}" method="post">
+                        <div class="form-group">
+                <label for="username">Username</label>
+                <input type="text" class="form-control" id="username" name="username" required>
+            </div>
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" class="form-control" id="password" name="password" required>
+            </div>
+            <button type="submit" class="btn btn-primary">Save Changes</button>
+            <a href="{{ url_for('users') }}" class="btn btn-secondary">Cancel</a>
+        </form>
+    </div>
+{% endblock %}

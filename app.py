@@ -4,6 +4,7 @@ from werkzeug.security import check_password_hash
 from db.db_connection import get_connection
 from psycopg2.extras import RealDictCursor
 from datetime import timedelta
+from werkzeug.security import generate_password_hash
 import os
 
 app = Flask(__name__)
@@ -18,9 +19,10 @@ login_manager.login_view = 'login'
 app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(minutes=30)
 
 class User(UserMixin):
-    def __init__(self, id, username):
+    def __init__(self, id, username, admin=False):
         self.id = id
         self.username = username
+        self.admin = admin
 
 
 @login_manager.user_loader
@@ -28,12 +30,12 @@ def load_user(user_id):
     conn = get_connection()
     if conn:
         with conn.cursor(cursor_factory=RealDictCursor) as cursor:
-            cursor.execute("SELECT id, username FROM users WHERE id = %s", (user_id,))
+            cursor.execute("SELECT id, username, admin FROM users WHERE id = %s", (user_id,))
             user = cursor.fetchone()
             conn.close()
     else:
         user = None
-    return User(user['id'], user['username']) if user else None
+    return User(user['id'], user['username'], user['admin']) if user else None
 
 
 @app.route('/')
@@ -110,6 +112,131 @@ def get_filtered_stats():
 
     return jsonify(stats), 200
 
+
+@app.route('/users', methods=['GET', 'POST'])
+@login_required
+def users():
+    conn = get_connection()
+    users = []
+
+    if request.method == 'POST':
+        # Create a new user
+        username = request.form['username']
+        password = request.form['password']  # Encrypt before storing
+        hashed_password = generate_password_hash(password)
+
+        if conn:
+            try:
+                with conn.cursor() as cursor:
+                    cursor.execute(
+                        "INSERT INTO users (username, encrypted_password) VALUES (%s, %s)",
+                        (username, hashed_password)
+                    )
+                    conn.commit()
+            finally:
+                conn.close()
+        return redirect(url_for('manage_users'))
+
+    if conn:
+        try:
+            with conn.cursor(cursor_factory=RealDictCursor) as cursor:
+                cursor.execute("SELECT * FROM users ORDER BY id ASC")
+                users = cursor.fetchall()
+        finally:
+            conn.close()
+
+    return render_template('users.html', users=users)
+
+@app.route('/users/edit/<int:id>', methods=['GET', 'POST'])
+@login_required
+def edit_user(id):
+    conn = get_connection()
+    user = None
+
+    if request.method == 'POST':
+        username = request.form['username']
+        if conn:
+            try:
+                with conn.cursor() as cursor:
+                    cursor.execute(
+                        "UPDATE users SET username = %s WHERE id = %s",
+                        (username, id)
+                    )
+                    conn.commit()
+            finally:
+                conn.close()
+        return redirect(url_for('users'))
+
+    if conn:
+        try:
+            with conn.cursor(cursor_factory=RealDictCursor) as cursor:
+                cursor.execute("SELECT id, username FROM users WHERE id = %s", (id,))
+                user = cursor.fetchone()
+        finally:
+            conn.close()
+
+    return render_template('edit_user.html', user=user)
+
+
+@app.route('/users/update/<int:id>', methods=['POST'])
+@login_required
+def update_user(id):
+    username = request.form['username']
+    conn = get_connection()
+
+    if conn:
+        try:
+            with conn.cursor() as cursor:
+                cursor.execute(
+                    "UPDATE users SET username = %s WHERE id = %s",
+                    (username, id)
+                )
+                conn.commit()
+        finally:
+            conn.close()
+    return redirect(url_for('users'))
+
+@app.route('/users/new', methods=['GET', 'POST'])
+@login_required
+def new_user():
+    if request.method == 'POST':
+        username = request.form['username']
+        password = request.form['password']
+        hashed_password = generate_password_hash(password, method='pbkdf2:sha256')
+
+        conn = get_connection()
+        if conn:
+            try:
+                with conn.cursor() as cursor:
+                    cursor.execute(
+                        "INSERT INTO users (username, encrypted_password) VALUES (%s, %s)",
+                        (username, hashed_password)
+                    )
+                    conn.commit()
+            finally:
+                conn.close()
+        return redirect(url_for('users'))
+
+    # Render a form for GET request
+    return render_template('new_user.html')
+
+
+
+@app.route('/users/delete/<int:id>', methods=['POST'])
+@login_required
+def delete_user(id):
+    conn = get_connection()
+
+    if conn:
+        try:
+            with conn.cursor() as cursor:
+                cursor.execute("DELETE FROM users WHERE id = %s", (id,))
+                conn.commit()
+        finally:
+            conn.close()
+
+    return redirect(url_for('users'))
+
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if current_user.is_authenticated:
@@ -141,7 +268,7 @@ def login():
 
                             # Increment login_count after successful login
                             with conn.cursor() as cursor:
-                                cursor.execute("UPDATE users SET sign_in_count = sign_in_count + 1 WHERE id = %s",
+                                cursor.execute("UPDATE users SET sign_in_count = sign_in_count + 1, last_sign_in_at = NOW() WHERE id = %s",
                                                (user['id'],))
                                 conn.commit()
 
@@ -168,6 +295,13 @@ def logout():
     logout_user()
     return redirect(url_for('login'))
 
+@app.errorhandler(404)
+def page_not_found(error):
+    return render_template('errors/404.html'), 404
+
+@app.errorhandler(500)
+def internal_server_error(error):
+    return render_template('errors/500.html'), 500
 
 # Update the session timeout on each request
 @app.before_request

@@ -29,6 +29,16 @@
                         </div>
                     </a>
                 </li>
+                {% if current_user.admin %}
+                    <li class="c-menu__item {{ 'is-active' if request.endpoint == 'users' else '' }}" data-toggle="tooltip" title="Users">
+                        <a class="c-menu__item__inner" href="{{ url_for('users') }}">
+                            <i class="fa-solid fa-users-gear"></i>
+                            <div class="c-menu-item__title">
+                                <span>Users</span>
+                            </div>
+                        </a>
+                    </li>
+                {% endif %}
                 {#                <li class="c-menu__item has-submenu" data-toggle="tooltip" title="Modules">#}
                 {#                    <div class="c-menu__item__inner">#}
                 {#                        <i class="fa fa-puzzle-piece"></i>#}

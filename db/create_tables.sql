@@ -6,6 +6,7 @@ CREATE TABLE users (
     encrypted_password varchar default ''::character varying not null,
     admin boolean DEFAULT false,
     sign_in_count INT DEFAULT 0,
+    last_sign_in_at TIMESTAMPTZ,
     created_at TIMESTAMPTZ DEFAULT NOW(),
     updated_at TIMESTAMPTZ DEFAULT NOW()
 );
