@@ -39,6 +39,14 @@
                         </a>
                     </li>
                 {% endif %}
+                <li class="c-menu__item {{ 'is-active' if request.endpoint == 'course_contents' else '' }}" data-toggle="tooltip" title="Course Contents">
+                    <a class="c-menu__item__inner" href="{{ url_for('course_contents') }}">
+                        <i class="fa-solid fa-arrows-to-circle"></i>
+                        <div class="c-menu-item__title">
+                            <span>Course Contents</span>
+                        </div>
+                    </a>
+                </li>
                 {#                <li class="c-menu__item has-submenu" data-toggle="tooltip" title="Modules">#}
                 {#                    <div class="c-menu__item__inner">#}
                 {#                        <i class="fa fa-puzzle-piece"></i>#}

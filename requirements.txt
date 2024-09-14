@@ -5,4 +5,5 @@ flask-login
 werkzeug
 python-dotenv
 pytz
-
+pandas
+jinja2

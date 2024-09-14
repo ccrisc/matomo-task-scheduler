@@ -1,14 +1,18 @@
-from flask import Flask, render_template, redirect, url_for, request, session, flash, jsonify
+from flask import Flask, render_template, redirect, url_for, request, session, flash, jsonify, send_from_directory, abort, current_app
 from flask_login import LoginManager, UserMixin, login_user, logout_user, login_required, current_user
-from werkzeug.security import check_password_hash
-from db.db_connection import get_connection
+from werkzeug.security import check_password_hash, generate_password_hash
 from psycopg2.extras import RealDictCursor
 from datetime import timedelta
-from werkzeug.security import generate_password_hash
 import os
+import pandas as pd
+from db.db_connection import get_connection
+from report_generator import generate_reports
 
 app = Flask(__name__)
 app.secret_key = os.getenv('FLASK_SECRET_KEY')
+
+# Configure upload folder
+app.config['UPLOAD_FOLDER'] = os.path.join(os.path.abspath(os.path.dirname(__file__)), 'generated_reports')
 
 # Set up Flask-Login
 login_manager = LoginManager()
@@ -18,12 +22,21 @@ login_manager.login_view = 'login'
 # Set session timeout to 30 minutes
 app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(minutes=30)
 
+def file_exists(file_name):
+    """Check if the file exists in the upload folder."""
+    file_path = os.path.join(current_app.config['UPLOAD_FOLDER'], file_name)
+    return os.path.isfile(file_path)
+
+@app.context_processor
+def utility_processor():
+    """Add utility functions to the Jinja2 template context."""
+    return dict(file_exists=file_exists)
+
 class User(UserMixin):
     def __init__(self, id, username, admin=False):
         self.id = id
         self.username = username
         self.admin = admin
-
 
 @login_manager.user_loader
 def load_user(user_id):
@@ -37,7 +50,6 @@ def load_user(user_id):
         user = None
     return User(user['id'], user['username'], user['admin']) if user else None
 
-
 @app.route('/')
 @login_required
 def dashboard():
@@ -47,7 +59,6 @@ def dashboard():
     if conn:
         try:
             with conn.cursor(cursor_factory=RealDictCursor) as cursor:
-                # Fetch the last API call
                 cursor.execute("SELECT * FROM api_calls ORDER BY created_at DESC LIMIT 1")
                 last_api_call = cursor.fetchone()
         finally:
@@ -69,13 +80,11 @@ def api_calls():
 
     return render_template('api_calls.html', api_calls=api_calls)
 
-
 @app.route('/stats')
 @login_required
 def stats():
     return render_template('stats.html')
 
-# API route to get filtered data for the charts
 @app.route('/api/stats', methods=['POST'])
 @login_required
 def get_filtered_stats():
@@ -96,7 +105,6 @@ def get_filtered_stats():
                            device_type, browser_name 
                     FROM daily_visits WHERE TRUE
                 """
-                # Apply filters if they exist
                 if start_date and end_date:
                     query += " AND server_time BETWEEN %s AND %s"
                     filters.extend([start_date, end_date])
@@ -112,7 +120,6 @@ def get_filtered_stats():
 
     return jsonify(stats), 200
 
-
 @app.route('/users', methods=['GET', 'POST'])
 @login_required
 def users():
@@ -120,9 +127,8 @@ def users():
     users = []
 
     if request.method == 'POST':
-        # Create a new user
         username = request.form['username']
-        password = request.form['password']  # Encrypt before storing
+        password = request.form['password']
         hashed_password = generate_password_hash(password)
 
         if conn:
@@ -177,7 +183,6 @@ def edit_user(id):
 
     return render_template('edit_user.html', user=user)
 
-
 @app.route('/users/update/<int:id>', methods=['POST'])
 @login_required
 def update_user(id):
@@ -217,10 +222,7 @@ def new_user():
                 conn.close()
         return redirect(url_for('users'))
 
-    # Render a form for GET request
     return render_template('new_user.html')
-
-
 
 @app.route('/users/delete/<int:id>', methods=['POST'])
 @login_required
@@ -237,12 +239,56 @@ def delete_user(id):
 
     return redirect(url_for('users'))
 
+@app.route('/course_contents')
+@login_required
+def course_contents():
+    conn = get_connection()
+    if conn:
+        with conn.cursor(cursor_factory=RealDictCursor) as cursor:
+            cursor.execute("SELECT * FROM course_contents")
+            course_contents = cursor.fetchall()
+            conn.close()
+    else:
+        course_contents = []
+
+    return render_template('course_contents.html', course_contents=course_contents)
+
+@app.route('/process_selection', methods=['POST'])
+@login_required
+def process_selection():
+    selected_ids = request.form.getlist('selected_courses')
+
+    if not selected_ids:
+        flash('No selections made. Please select at least one course content.')
+        return redirect(url_for('course_contents'))
+
+    conn = get_connection()
+    if conn:
+        try:
+            selected_ids_str = ','.join(selected_ids)
+            query = f"SELECT * FROM course_contents WHERE id IN ({selected_ids_str})"
+            df = pd.read_sql_query(query, conn)
+        finally:
+            conn.close()
+
+    num_reports = generate_reports(df)
+    flash(f'{num_reports} reports generated successfully!')
+    return redirect(url_for('course_contents'))
+
+@app.route('/download/<file_name>')
+def download_file(file_name):
+    if file_exists(file_name):
+        return send_from_directory(current_app.config['UPLOAD_FOLDER'], file_name, as_attachment=True)
+    else:
+        abort(404)
+
+
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if current_user.is_authenticated:
         return redirect(url_for('dashboard'))
 
-    error_message = None  # Variable to store error messages
+    error_message = None
 
     if request.method == 'POST':
         username = request.form['username']
@@ -258,25 +304,20 @@ def login():
                     user = cursor.fetchone()
 
                 if user:
-                    try:
-                        if check_password_hash(user['encrypted_password'], password):
-                            user_obj = User(user['id'], user['username'])
-                            login_user(user_obj)
+                    if check_password_hash(user['encrypted_password'], password):
+                        user_obj = User(user['id'], user['username'])
+                        login_user(user_obj)
+                        session.permanent = True
 
-                            # Make the session permanent so the timeout applies
-                            session.permanent = True
+                        with conn.cursor() as cursor:
+                            cursor.execute(
+                                "UPDATE users SET sign_in_count = sign_in_count + 1, last_sign_in_at = NOW() WHERE id = %s",
+                                (user['id'],))
+                            conn.commit()
 
-                            # Increment login_count after successful login
-                            with conn.cursor() as cursor:
-                                cursor.execute("UPDATE users SET sign_in_count = sign_in_count + 1, last_sign_in_at = NOW() WHERE id = %s",
-                                               (user['id'],))
-                                conn.commit()
-
-                            return redirect(url_for('dashboard'))
-                        else:
-                            error_message = 'Incorrect password. Please try again.'
-                    except ValueError as e:
-                        error_message = f"Password verification failed: {str(e)}"
+                        return redirect(url_for('dashboard'))
+                    else:
+                        error_message = 'Incorrect password. Please try again.'
                 else:
                     error_message = 'Username not found. Please try again.'
             except Exception as e:
@@ -287,7 +328,6 @@ def login():
             error_message = 'Database connection error.'
 
     return render_template('login.html', error_message=error_message)
-
 
 @app.route('/logout', methods=['POST'])
 @login_required
@@ -303,11 +343,9 @@ def page_not_found(error):
 def internal_server_error(error):
     return render_template('errors/500.html'), 500
 
-# Update the session timeout on each request
 @app.before_request
 def update_session_timeout():
     session.modified = True
-
 
 if __name__ == "__main__":
     app.run(debug=True)

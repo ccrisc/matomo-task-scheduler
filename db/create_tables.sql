@@ -71,3 +71,19 @@ CREATE TABLE action_details (
         REFERENCES daily_visits (id)
         ON DELETE CASCADE
 );
+
+CREATE TABLE course_contents (
+    id SERIAL PRIMARY KEY,
+    lecture_no varchar,
+    lecture_title varchar,
+    youtube_link varchar,
+    type_of varchar,
+    language varchar,
+    ex_number varchar,
+    ex_instruction varchar,
+    hint varchar,
+    slides_link varchar,
+    teams_link varchar,
+    created_at TIMESTAMPTZ DEFAULT NOW(),
+    updated_at TIMESTAMPTZ DEFAULT NOW()
+);
