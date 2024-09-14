@@ -80,7 +80,7 @@ Main functionalities:
 <!-- GETTING STARTED -->
 ## Getting Started
 
-To get a local copy up and running follow be ture to have the following steps checked.
+To get a local copy up and running be sure to have the following steps checked.
 
 ### Prerequisites
 
@@ -93,20 +93,20 @@ To get a local copy up and running follow be ture to have the following steps ch
 
 1. Clone the repo
    ```sh
-   git clone https://github.com/ccrisc/matomo.git
+   git clone https://github.com/ccrisc/matomo-task-scheduler.git
    ```
 2. Install necessary packages
-  ```sh
-  pip install -r requirements.txt
-  ```
-3. Create a `.env` file and define the following variables
+   ```sh
+   pip install -r requirements.txt
+   ```
+3. To work on your local environment create a `.env` file in the main root of the project and define the following variables
     ```php
    ENVIRONMENT=development
    SUPABASE_HOST=localhost
    SUPABASE_PORT=5432
    SUPABASE_DB_NAME=matomo_task_scheduler
-   SUPABASE_PASSWORD=xxxx
-   SUPABASE_USER=xxxx
+   SUPABASE_PASSWORD=xxxx (you delete the row on localhost if no username is set)
+   SUPABASE_USER=xxxx (you delete the row on localhost if no pw is set)
    FLASK_SECRET_KEY=xxxx
    MATOMO_API_URL=xxxx
    ```
@@ -129,9 +129,12 @@ To get a local copy up and running follow be ture to have the following steps ch
 
 ### Login
 Login with your user credentials. If you successfully set up the db you can log in with the following credentials:
+
 username: demo
 password: abcd
+
 <img width="823" alt="Screenshot 2024-09-08 alle 20 29 07" src="https://github.com/user-attachments/assets/e1cc7870-347a-4dc7-9f8d-eb22e957eacc">
+
 You will be automatically logged out after 30 minutes of inactivity
 
 ### Dashboard
