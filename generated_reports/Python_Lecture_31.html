@@ -1,0 +1,415 @@
+<html>
+
+<head>
+    <!-- Matomo -->
+    <script type="text/javascript">
+        var _paq = _paq || [];
+        /* tracker methods like "setCustomDimension" should be called before "trackPageView" */
+        _paq.push(['setAPIUrl', "https://webstats.uzh.ch/"]); // overlay fix
+        _paq.push(['trackPageView']);
+        _paq.push(['enableLinkTracking']);
+        (function () {
+            var u = "//webstats.uzh.ch/";
+            _paq.push(['setTrackerUrl', u + 'piwik.php']);
+            _paq.push(['setSiteId', '501']);
+            var d = document, g = d.createElement('script'), s = d.getElementsByTagName('script')[0];
+            g.type = 'text/javascript';
+            g.async = true;
+            g.defer = true;
+            g.src = u + 'piwik.js';
+            s.parentNode.insertBefore(g, s);
+        })();
+    </script>
+    <!-- End Matomo Code -->
+
+    <meta charset="UTF-8">
+    <title>Python 31 Basic techniques for creating functions</title>
+    <script async src="https://cdn.datacamp.com/dcl-react.js.gz"></script>
+    <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/css/bootstrap.min.css'>
+    <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css'>
+    <style>
+        /* css main page */
+
+        /*TITLE SECTION DESIGN*/
+        .title-section {
+            padding: 60px;
+            text-align: center;
+        }
+
+        .title-section .u-text-1 {
+            font-size: 12.5rem;
+            font-weight: 700;
+            line-height: 0.8;
+            margin: 9px 46px 0 auto;
+            color: #fcb404;
+            border-color: black;
+        }
+
+        .title-section .u-text-2 {
+            font-weight: 900;
+            margin: -106px auto 54px 46px;
+        }
+
+        .title-text-default {
+            display: table;
+            align-self: flex-start;
+            width: -webkit-fit-content;
+            width: fit-content;
+            width: -moz-fit-content;
+        }
+
+        .title-text-default:empty {
+            display: block;
+            width: 15px;
+        }
+
+        /* Hide the logo */
+        .dcl__index-module__githubLink--3955G {
+            display: none !important;
+        }
+
+        /* css buttons*/
+        #buttonArea {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* CSS for the parent container */
+        .container-fluid {
+            display: flex;
+            align-items: stretch;
+            /* height: 320px;  Set a fixed height for the container */
+        }
+
+        .resizable {
+            flex: 1; /* Allow both sides to grow equally */
+            overflow: auto;
+            padding: 10px;
+            position: relative;
+        }
+
+        .divider {
+            width: 2px; /* Divider line width */
+            background-color: #ccc; /* Divider line color */
+            cursor: col-resize; /* Cursor style for resizing */
+            position: relative;
+        }
+
+        .hide {
+            display: none;
+        }
+
+        .myDIV:hover + .hide {
+            display: block;
+            color: red;
+        }
+    </style>
+</head>
+
+<body>
+
+
+<section class="title-section">
+    <h2 class="title-text-default u-text-1">
+        31
+    </h2>
+    <h1 class="title-text-default u-text-2">
+        Lecture
+    </h1>
+    <br>
+    <hr>
+    <h1>
+        BASIC TECHNIQUES FOR CREATING FUNCTIONS
+    </h1>
+</section>
+
+<section>
+    <div class="container-fluid">
+        <div class="resizable left-content" id="leftContent">
+            <iframe width=100% height=320 src='https://www.youtube.com/embed/4bsxibFNniY?si=Tsy7IJzGisq2sAfM' data-external='1' allow='fullscreen;'></iframe>
+            <br><br>
+            <button onclick="window.open('https://lms.uzh.ch/url/RepositoryEntry/17550738163/documents/0/path%3D~~Slides~~Python~~Python%20%2D%20Basic%20techniques%20for%20creating%20functions%2Epdf/0'); _paq.push(['trackEvent','Button Click','Download Slides Button',]);">
+                <i class="fa fa-download"></i> Download slides
+            </button>
+        </div>
+
+        <div class="divider" id="divider"></div> <!-- Divider line -->
+        <div class="resizable right-content" id="rightContent">
+            <div data-datacamp-exercise data-lang="python" data-height=320
+                 id="Lecture31Python">
+                <code data-type="pre-exercise-code"> </code>
+                <code data-type="sample-code"> </code>
+            </div>
+            <button id="download"><i class="fa-regular fa-file-code"></i> Download code</button>
+            <button id="resetButton"><i class="fa-solid fa-rotate-right"></i> Reset</button>
+            <br><br>
+        </div>
+    </div>
+    <br>
+    <div style="text-align: center;">
+        <label for="heightInput">Enter new window height:</label>
+        <br>
+        <input type="number" id="heightInput" min="320" step="1" value="420">
+        <button id="resizeButton">Resize</button>
+    </div>
+</section>
+<hr>
+<br>
+<div id="buttonArea">
+    <a class="myDIV" href="#" onclick="window.open('https://teams.microsoft.com/l/channel/19%3a50f6e42da59841a49e3dda60910f6365%40thread.tacv2/31-Basic%2520techniques%2520for%2520creating%2520functions?groupId=2c4d533e-fac2-40e3-ab1d-8cdc51b8cce5&tenantId=c7e438db-e462-4c22-a90a-c358b16980b3')"> Go to teams channel &nbsp;</a>
+    <svg class="hide bi bi-microsoft-teams" style="color:#464EB8; width:500%;" xmlns="http://www.w3.org/2000/svg"
+         width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+        <path d="M9.186 4.797a2.42 2.42 0 1 0-2.86-2.448h1.178c.929 0 1.682.753 1.682 1.682v.766Zm-4.295 7.738h2.613c.929 0 1.682-.753 1.682-1.682V5.58h2.783a.7.7 0 0 1 .682.716v4.294a4.197 4.197 0 0 1-4.093 4.293c-1.618-.04-3-.99-3.667-2.35Zm10.737-9.372a1.674 1.674 0 1 1-3.349 0 1.674 1.674 0 0 1 3.349 0Zm-2.238 9.488c-.04 0-.08 0-.12-.002a5.19 5.19 0 0 0 .381-2.07V6.306a1.692 1.692 0 0 0-.15-.725h1.792c.39 0 .707.317.707.707v3.765a2.598 2.598 0 0 1-2.598 2.598h-.013Z"/>
+        <path d="M.682 3.349h6.822c.377 0 .682.305.682.682v6.822a.682.682 0 0 1-.682.682H.682A.682.682 0 0 1 0 10.853V4.03c0-.377.305-.682.682-.682Zm5.206 2.596v-.72h-3.59v.72h1.357V9.66h.87V5.945h1.363Z"/>
+    </svg>
+
+
+</div>
+<hr style="width:20%">
+<div id="buttonArea">
+    <a href='#' onclick='showModalPopUp()'>Give feedback</a>
+</div>
+<br>
+<br>
+<br>
+<script>
+
+    var popUpObj;
+
+    function showModalPopUp() {
+
+        popUpObj = window.open("Python_review_Lecture.html", "ModalPopUp", "width=400," + "height=650");
+
+        popUpObj.focus();
+
+        LoadModalDiv();
+
+    }
+
+</script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const divider = document.getElementById('divider');
+        const leftContent = document.getElementById('leftContent');
+        const rightContent = document.getElementById('rightContent');
+        let isDragging = false;
+
+        divider.addEventListener('mousedown', (e) => {
+            isDragging = true;
+        });
+
+        document.addEventListener('mousemove', (e) => {
+            if (!isDragging) return;
+
+            const containerRect = leftContent.parentElement.getBoundingClientRect();
+            const containerLeft = containerRect.left;
+            const containerWidth = containerRect.width;
+            const mouseX = e.clientX;
+
+            const dividerX = mouseX - containerLeft;
+
+            // Limit the divider movement to within the container
+            if (dividerX >= 0 && dividerX <= containerWidth) {
+                const leftWidth = (dividerX / containerWidth) * 100;
+                leftContent.style.flexBasis = `${leftWidth}%`;
+                rightContent.style.flexBasis = `${100 - leftWidth}%`;
+            }
+        });
+
+        document.addEventListener('mouseup', () => {
+            if (isDragging) {
+                isDragging = false;
+            }
+        });
+
+        // Prevent text selection while dragging
+        document.addEventListener('selectstart', (e) => {
+            if (isDragging) {
+                e.preventDefault();
+            }
+        });
+
+        // Disable drag-and-drop behavior for the divider
+        divider.addEventListener('dragstart', (e) => {
+            e.preventDefault();
+        });
+    });
+
+</script>
+
+
+<script>
+
+    document.addEventListener("DOMContentLoaded", function () {
+        var dataCampScript = document.getElementById("Lecture31Python");
+        var pageId = "Lecture31Python"; // Unique ID for this page
+
+        // Function to save the content of the DataCamp Light tool to Local Storage
+        function saveData(pageId) {
+            var aceLayer = dataCampScript.querySelector(".ace_layer.ace_text-layer");
+            var lines = aceLayer.querySelectorAll(".ace_line_group");
+            var scriptContent = "";
+
+            for (var i = 0; i < lines.length; i++) {
+                scriptContent += lines[i].textContent + '\n';
+            }
+            // Use a unique key with the pages ID to save the script content
+            localStorage.setItem("savedScript_" + pageId, scriptContent);
+            //alert("Script saved");
+        }
+
+
+        // Function to load the saved script from local storage and override existing text for <textarea> elements
+        function loadSavedScript(pageId) {
+            var savedScript = localStorage.getItem("savedScript_" + pageId);
+            var initialText = "#write some code and run it";
+
+            if (savedScript) {
+                var aceTextareas = document.querySelectorAll("textarea.ace_text-input");
+                aceTextareas.forEach(function (aceTextarea) {
+                    var parentDiv = aceTextarea.closest("#ace-code-console-Lecture31Python");
+                    if (!parentDiv) {
+                        aceTextarea.value = savedScript;
+                        var event = new Event("input", {bubbles: true});
+                        aceTextarea.dispatchEvent(event);
+                    }
+                });
+            } else {
+                var aceTextareas = document.querySelectorAll("textarea.ace_text-input");
+                aceTextareas.forEach(function (aceTextarea) {
+                    var parentDiv = aceTextarea.closest("#ace-code-console-Lecture31Python");
+                    if (!parentDiv) {
+                        aceTextarea.value = initialText;
+                        var event = new Event("input", {bubbles: true});
+                        aceTextarea.dispatchEvent(event);
+                    }
+                });
+                // Also save the initial text to local storage
+                localStorage.setItem("savedScript_" + pageId, initialText);
+            }
+        }
+
+        // Function to trigger the download of the saved script
+        function downloadScript() {
+            var savedScript = localStorage.getItem("savedScript_" + pageId);
+            if (savedScript) {
+                var blob = new Blob([savedScript], {type: "text/plain"});
+                var url = URL.createObjectURL(blob);
+
+                // Create a download link
+                var downloadLink = document.createElement("a");
+                downloadLink.href = url;
+                downloadLink.download = "Lecture31Python.py";
+
+                // Simulate a click on the download link
+                downloadLink.click();
+            }
+        }
+
+        // Add an event listener to the download button
+        //document.getElementById("download").addEventListener("click", downloadScript);
+        document.getElementById("download").addEventListener("click", function () {
+            _paq.push(["trackEvent", "Button Click", "Download Code"]); // Track the download button click
+            downloadScript(); // Call your downloadScript() function
+        });
+
+
+// Function to reset and clear the local storage for the specific page
+        function resetLocalStorage() {
+            localStorage.removeItem("savedScript_" + pageId); // Clear only for the "Lecture00" page
+            loadSavedScript(pageId); // Reload the default content
+            location.reload(); // Reload the page
+        }
+
+        // Add an event listener to the reset button
+        //document.getElementById("resetButton").addEventListener("click", resetLocalStorage);
+        document.getElementById("resetButton").addEventListener("click", function () {
+            _paq.push(["trackEvent", "Button Click", "Reset Console"]); // Track the download button click
+            resetLocalStorage();
+        });
+
+        // Save and load data for this page
+        function saveAndLoadData() {
+            saveData(pageId);
+        }
+
+        // Automatically save the content every 1 second
+        setInterval(saveAndLoadData, 5000);
+
+        // Call the functions to load the saved script when the page is loaded
+        setTimeout(function () {
+            loadSavedScript(pageId);
+        }, 1000);
+    });
+
+</script>
+
+<script>
+
+    const resizableElement = document.getElementById("Lecture31Python");
+    const heightInput = document.getElementById("heightInput");
+    const resizeButton = document.getElementById("resizeButton");
+    const iframeElement = document.querySelector("iframe[src='https://www.youtube.com/embed/4bsxibFNniY?si=Tsy7IJzGisq2sAfM']");
+
+    // Retrieve the saved data-height value from local storage on page load
+    const savedHeight = localStorage.getItem("exerciseHeight");
+    if (savedHeight) {
+        resizableElement.style.height = savedHeight + "px";
+        resizableElement.setAttribute("data-height", savedHeight);
+        iframeElement.style.height = savedHeight + "px"; // Set the iframe height as well
+    }
+
+    resizeButton.addEventListener("click", () => {
+        _paq.push(["trackEvent", "Button Click", "Resize Page"]);
+        const newHeight = parseInt(heightInput.value);
+        if (newHeight >= 100) {
+            resizableElement.style.height = newHeight + "px";
+            resizableElement.setAttribute("data-height", newHeight);
+            iframeElement.style.height = newHeight + "px"; // Set the iframe height as well
+
+            // Save the current data-height value to local storage
+            localStorage.setItem("exerciseHeight", newHeight);
+            location.reload();
+        }
+    });
+</script>
+
+<script>
+    function addRunButtonListeners() {
+        // Select all buttons with the specified class name
+        let runButtons = document.querySelectorAll("button.dcl__Button-module__primary--2SH7R");
+
+        runButtons.forEach(function (runButton) {
+            if (runButton.textContent.trim() === "Run") {
+                if (!runButton.hasAttribute("data-listener-attached")) {
+                    runButton.addEventListener("click", function () {
+                        _paq.push(["trackEvent", "Button Click", "Run Button Clicked"]);
+                    });
+                    runButton.setAttribute("data-listener-attached", "true"); // Mark listener as attached
+                }
+            }
+        });
+    }
+
+    // Initial check when DOM is loaded
+    document.addEventListener("DOMContentLoaded", function () {
+        // Initial check for Run buttons
+        addRunButtonListeners();
+
+        // Create a MutationObserver to watch for changes in the DOM
+        const observer = new MutationObserver(function (mutationsList) {
+            for (let mutation of mutationsList) {
+                if (mutation.type === "childList") {
+                    // Check for Run buttons when new nodes are added
+                    addRunButtonListeners();
+                }
+            }
+        });
+
+        // Start observing the document body for changes
+        observer.observe(document.body, {childList: true, subtree: true});
+    });
+</script>
+</body>
+</html>

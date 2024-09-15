@@ -253,6 +253,82 @@ def course_contents():
 
     return render_template('course_contents.html', course_contents=course_contents)
 
+@app.route('/create_course_content', methods=['GET', 'POST'])
+@login_required
+def create_course_content():
+    if request.method == 'POST':
+        type_of = request.form['type_of']
+        language = request.form['language']
+        lecture_title = request.form['lecture_title']
+        lecture_no = request.form.get('lecture_no')
+        youtube_link = request.form.get('youtube_link')
+        ex_number = request.form.get('ex_number')
+        ex_instruction = request.form.get('ex_instruction')
+
+        conn = get_connection()
+        if conn:
+            with conn.cursor() as cursor:
+                cursor.execute("""
+                    INSERT INTO course_contents (type_of, language, lecture_title, lecture_no, youtube_link, ex_number, ex_instruction) 
+                    VALUES (%s, %s, %s, %s, %s, %s, %s)
+                """, (type_of, language, lecture_title, lecture_no, youtube_link, ex_number, ex_instruction))
+                conn.commit()
+                conn.close()
+            flash('Course content created successfully!', 'success')
+        return redirect(url_for('course_contents'))
+
+    return render_template('create_course_content.html')
+
+@app.route('/edit_course_content/<int:id>', methods=['GET', 'POST'])
+@login_required
+def edit_course_content(id):
+    conn = get_connection()
+    course_content = None
+    if conn:
+        with conn.cursor(cursor_factory=RealDictCursor) as cursor:
+            cursor.execute("SELECT * FROM course_contents WHERE id = %s", (id,))
+            course_content = cursor.fetchone()
+            conn.close()
+
+    if request.method == 'POST':
+        type_of = request.form['type_of']
+        language = request.form['language']
+        lecture_title = request.form['lecture_title']
+        lecture_no = request.form.get('lecture_no')
+        youtube_link = request.form.get('youtube_link')
+        ex_number = request.form.get('ex_number')
+        ex_instruction = request.form.get('ex_instruction')
+
+        conn = get_connection()
+        if conn:
+            with conn.cursor() as cursor:
+                cursor.execute("""
+                    UPDATE course_contents 
+                    SET type_of = %s, language = %s, lecture_title = %s, lecture_no = %s, youtube_link = %s, ex_number = %s, ex_instruction = %s 
+                    WHERE id = %s
+                """, (type_of, language, lecture_title, lecture_no, youtube_link, ex_number, ex_instruction, id))
+                conn.commit()
+                conn.close()
+            flash('Course content updated successfully!', 'success')
+        return redirect(url_for('course_contents'))
+
+    return render_template('edit_course_content.html', course_content=course_content)
+
+@app.route('/delete_course_content/<int:id>', methods=['POST'])
+@login_required
+def delete_course_content(id):
+    conn = get_connection()
+    if conn:
+        with conn.cursor() as cursor:
+            cursor.execute("DELETE FROM course_contents WHERE id = %s", (id,))
+            conn.commit()
+            conn.close()
+        flash('Course content deleted successfully!', 'success')
+    return redirect(url_for('course_contents'))
+
+
+
+
 @app.route('/process_selection', methods=['POST'])
 @login_required
 def process_selection():
@@ -274,6 +350,7 @@ def process_selection():
     num_reports = generate_reports(df)
     flash(f'{num_reports} reports generated successfully!')
     return redirect(url_for('course_contents'))
+
 
 @app.route('/download/<file_name>')
 def download_file(file_name):
