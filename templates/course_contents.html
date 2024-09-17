@@ -32,7 +32,7 @@
                             <td style="text-align: right">{{ course_content.lecture_no }}</td>
                             <td style="text-align: left"><a href="{{ course_content.youtube_link }}" target="_blank">{{ course_content.youtube_link }}</a></td>
                         {% else %}
-                            <td style="text-align: right">{{ course_content.ex_number }}</td>
+                            <td style="text-align: right">{{ course_content.lecture_no }} - {{ course_content.ex_number }}</td>
                             <td style="text-align: left">{{ course_content.ex_instruction }}</td>
                         {% endif %}
                         <td style="text-align: center">
