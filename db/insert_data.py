@@ -51,10 +51,17 @@ def insert_data(data):
     ON CONFLICT (id_visit) DO NOTHING
     """
 
-    # SQL query to insert data into action_details table
+    # SQL query to insert or update data into action_details table
     sql_action_details = """
-    INSERT INTO action_details (daily_visit_id, type, url, page_view_identifier, page_id_action, timestamp, page_view_position, title, subtitle, time_spent_seconds, page_load_time_milliseconds, event_category, event_action)
-    VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s) ON CONFLICT (page_view_identifier) DO NOTHING
+    INSERT INTO action_details (
+        daily_visit_id, type, url, page_view_identifier, page_id_action, timestamp, 
+        page_view_position, title, subtitle, time_spent_seconds, page_load_time_milliseconds, 
+        event_category, event_action
+    )
+    VALUES (
+        %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s
+    )
+    ON CONFLICT (type, page_view_identifier) DO NOTHING
     """
 
     try:

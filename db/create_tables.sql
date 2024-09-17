@@ -54,22 +54,21 @@ CREATE TABLE action_details (
     daily_visit_id INT NOT NULL,
     type varchar,
     url varchar,
-    page_view_identifier varchar NOT NULL UNIQUE,
+    page_view_identifier varchar NOT NULL,
     page_id_action integer,
     timestamp timestamp,
     page_view_position integer,
     title varchar,
     subtitle varchar,
-    -- only for event type action (page views)
     time_spent_seconds integer,
     page_load_time_milliseconds integer,
-    -- only for event type event (page views)
     event_category varchar,
     event_action varchar,
     CONSTRAINT fk_daily_visit
         FOREIGN KEY (daily_visit_id)
         REFERENCES daily_visits (id)
-        ON DELETE CASCADE
+        ON DELETE CASCADE,
+    CONSTRAINT unique_action_event UNIQUE (type, page_view_identifier)
 );
 
 CREATE TABLE course_contents (
