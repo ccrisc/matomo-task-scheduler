@@ -22,7 +22,7 @@
                 <tbody>
                     {% for course_content in course_contents %}
                     <tr>
-                        <td style="text-align: center">
+                        <td style="text-align: center; width: 5%">
                             <input type="checkbox" name="selected_courses" value="{{ course_content.id }}">
                         </td>
                         <td style="text-align: center">{{ course_content.type_of }}</td>
@@ -35,15 +35,15 @@
                             <td style="text-align: right">{{ course_content.lecture_no }} - {{ course_content.ex_number }}</td>
                             <td style="text-align: left">{{ course_content.ex_instruction }}</td>
                         {% endif %}
-                        <td style="text-align: center">
-                            <a href="{{ url_for('edit_course_content', id=course_content.id) }}" class="btn btn-warning btn-sm" data-toggle="tooltip" title="Edit"><i class="fas fa-pencil-alt"></i></a>
-                            <form action="{{ url_for('delete_course_content', id=course_content.id) }}" method="post" style="display: inline;">
-                                <button type="submit" class="btn btn-danger btn-sm" data-toggle="tooltip" title="Delete" onclick="return confirm('Are you sure you want to delete this user?')"><i class="fas fa-trash"></i></button>
-                            </form>
+                        <td style="text-align: center; width: 10%">
                             {% set file_name = course_content.language ~ '_' ~ course_content.type_of ~ '_' ~ course_content.lecture_no ~ '.html' %}
                             {% if file_exists(file_name) %}
                                 <a href="{{ url_for('download_file', file_name=file_name) }}" class="btn btn-primary btn-sm" data-toggle="tooltip" title="Download"><i class="fas fa-download"></i></a>
                             {% endif %}
+                            <a href="{{ url_for('edit_course_content', id=course_content.id) }}" class="btn btn-warning btn-sm" data-toggle="tooltip" title="Edit"><i class="fas fa-pencil-alt"></i></a>
+                            <form action="{{ url_for('delete_course_content', id=course_content.id) }}" method="post" style="display: inline;">
+                                <button type="submit" class="btn btn-danger btn-sm" data-toggle="tooltip" title="Delete" onclick="return confirm('Are you sure you want to delete this user?')"><i class="fas fa-trash"></i></button>
+                            </form>
                         </td>
                     </tr>
                     {% endfor %}

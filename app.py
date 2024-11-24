@@ -153,6 +153,11 @@ def users():
 
     return render_template('users.html', users=users)
 
+@app.route('/settings')
+@login_required
+def settings():
+    return render_template('settings.html', users=users)
+
 @app.route('/users/edit/<int:id>', methods=['GET', 'POST'])
 @login_required
 def edit_user(id):

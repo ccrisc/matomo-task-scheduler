@@ -47,6 +47,14 @@
                         </div>
                     </a>
                 </li>
+                <li class="c-menu__item {{ 'is-active' if request.endpoint == 'settings' else '' }}" data-toggle="tooltip" title="Settings">
+                    <a class="c-menu__item__inner" href="{{ url_for('settings') }}">
+                        <i class="fa-solid fa-gears"></i>
+                        <div class="c-menu-item__title">
+                            <span>Settings</span>
+                        </div>
+                    </a>
+                </li>
                 {#                <li class="c-menu__item has-submenu" data-toggle="tooltip" title="Modules">#}
                 {#                    <div class="c-menu__item__inner">#}
                 {#                        <i class="fa fa-puzzle-piece"></i>#}

@@ -19,7 +19,8 @@ CREATE TABLE api_calls (
     status_code INT,
     status varchar,
     total_rows_found INT,
-    error_message TEXT DEFAULT NULL
+    error_message TEXT DEFAULT NULL,
+    data_day TIMESTAMPTZ
 );
 
 CREATE TABLE daily_visits (

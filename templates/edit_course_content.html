@@ -3,19 +3,25 @@
 {% block content %}
     <h1 class="page-title">Edit Course Content</h1>
     <form action="{{ url_for('edit_course_content', id=course_content.id) }}" method="post">
-        <div class="form-group">
+        <div class="form-group" style="width: 30%;">
             <label for="type_of">Type</label>
-            <input type="text" class="form-control" id="type_of" name="type_of" value="{{ course_content.type_of }}" required>
+            <select class="form-control" id="type_of" name="type_of" required>
+                <option value="Lecture" {% if course_content.type_of == "Lecture" %}selected{% endif %}>Lecture</option>
+                <option value="Exercise" {% if course_content.type_of == "Exercise" %}selected{% endif %}>Exercise</option>
+            </select>
         </div>
-        <div class="form-group">
+        <div class="form-group" style="width: 30%;">
             <label for="language">Language</label>
-            <input type="text" class="form-control" id="language" name="language" value="{{ course_content.language }}" required>
+            <select class="form-control" id="language" name="language" required>
+                <option value="R" {% if course_content.language == "R" %}selected{% endif %}>R</option>
+                <option value="Python" {% if course_content.language == "Python" %}selected{% endif %}>Python</option>
+            </select>
         </div>
         <div class="form-group">
             <label for="lecture_title">Title</label>
             <input type="text" class="form-control" id="lecture_title" name="lecture_title" value="{{ course_content.lecture_title }}" required>
         </div>
-        <div class="form-group">
+        <div class="form-group" style="width: 20%;">
             <label for="lecture_no">Lecture Number</label>
             <input type="number" class="form-control" id="lecture_no" name="lecture_no" value="{{ course_content.lecture_no }}">
         </div>
@@ -23,7 +29,7 @@
             <label for="youtube_link">YouTube Link</label>
             <input type="url" class="form-control" id="youtube_link" name="youtube_link" value="{{ course_content.youtube_link }}">
         </div>
-        <div class="form-group">
+        <div class="form-group" style="width: 20%;">
             <label for="ex_number">Exercise Number</label>
             <input type="number" class="form-control" id="ex_number" name="ex_number" value="{{ course_content.ex_number }}">
         </div>
@@ -33,7 +39,7 @@
         </div>
         <div class="button-group">
             <button type="submit" class="btn btn-primary">Save</button>
-            <a href="{{ url_for('users') }}" class="btn btn-secondary">Cancel</a>
+            <a href="{{ url_for('course_contents') }}" class="btn btn-secondary">Cancel</a>
         </div>
     </form>
 {% endblock %}
